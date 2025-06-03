@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VS Code Style Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Fira Code', monospace;
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #toolbar {
+      background-color: #252526;
+      padding: 0.75rem;
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid #333;
+    }
+
+    button {
+      background-color: #3c3c3c;
+      color: #dcdcdc;
+      border: 1px solid #555;
+      border-radius: 4px;
+      padding: 0.4rem 1rem;
+      font-family: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    #editor-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    textarea {
+      width: 50%;
+      height: 100%;
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      border: none;
+      padding: 1rem;
+      font-size: 1rem;
+      resize: none;
+      outline: none;
+      border-right: 1px solid #3c3c3c;
+    }
+
+    iframe {
+      width: 50%;
+      height: 100%;
+      border: none;
+      background-color: #ffffff;
+    }
+  </style>
+
+  <script type="module" crossorigin src="/assets/index-DbpqxjjP.js"></script>
+</head>
+<body>
+  <div id="toolbar">
+    <h1>Marker Site Builder V0.1 BETA</h1>
+    <a href="temp-result.html" download="marked_yourcode">Download HTML</a>
+  </div>
+
+  <div id="editor-layout">
+    <textarea id="temp-result" placeholder="Write your HTML here..."></textarea>
+    <iframe id="preview"  src="./temp-result.html" frameborder="0"></iframe>
+
+  </div>
+</body>
+</html>
