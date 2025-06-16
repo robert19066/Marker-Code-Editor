@@ -1,49 +1,52 @@
+# 🚀 Marker Site Builder  
+![Marker Site Builder Logo](./images/Marker.ico)  
 
-# 🚀 Marker Site Builder
-![marker-builder-logo](./images/Marker.ico)
+### **Your Next-Gen Site Editing Tool**  
 
-**Marker Site Builder** is a **VS Code-style web-based editor** featuring a **glassmorphic UI**, **live Markdown preview**, and **multi-format export options**.  
-It allows users to **edit, preview, and export files** in **HTML, Markdown, or DOCX**, with a **dark/light mode toggle** and **draggable UI panels** for maximum flexibility.
-
-## 🌟 Key Features
-✅ **Live Markdown preview** with styling  
-✅ **Glassmorphic UI with smooth animations**  
-✅ **Draggable & resizable editor/preview panels**  
-✅ **Dark/Light mode toggle with local memory**  
-✅ **Export files as HTML, Markdown & DOCX**  
-
-## 🛠️ Installation Options
-Marker Site Builder is available in two formats:
-
-### 🔹 Portable Version
-✔ **No installation required**  
-✔ **Download and run immediately**  
-
-**Steps:**
-1. Download `MarkerEditor_V(your version)_PORTABLE.exe` from "Releases."
-2. Run the executable.
-3. Start editing and exporting files instantly!
-
-### 🔹 NSIS Installer
-✔ **Standard installation for easy access**  
-✔ **Launch from the Start Menu**  
-
-**Steps:**
-1. Download `MarkerEditor_V(your version)_NSIS.exe` from "Releases."
-2. Run the installer.
-3. Open Marker Site Builder from the Start Menu.
-
-## 🖥️ How to Use
-
-1. **Write Markdown/HTML** in the editor panel.  
-2. **Preview updates live** in real time.  
-3. **Choose an export format** (HTML, Markdown, or DOCX).  
-4. **Download your file instantly.**  
+**Marker Site Builder** is a sleek, **VS Code-inspired web editor** with a **glassmorphic UI**, **live Markdown preview**, and **multi-format export options**.  
+It’s built for creators who need an intuitive, feature-rich editor to **write, preview, and export** their files with ease.  
 
 ---
-![marker-screenshot](./images/Capture.png)
+## 🌟 **Why Choose Marker?**  
+✅ **Live Markdown preview** with real-time rendering  
+✅ **Glassmorphic UI**—modern, elegant, and smooth  
+✅ **Resizable & draggable editor + preview panels**  
+✅ **Dark/Light mode toggle with local storage memory**  
+✅ **Multi-format export**—save as **HTML, Markdown, DOCX**  
+
 ---
+## 🛠️ **Installation Guide**  
+Marker Site Builder is available in **two formats**, so choose what fits your workflow!
 
-🛠 **Made with love by** `robert19066`  
+### 🔹 **Portable Version**  
+✔ **No installation required**—just download & run!  
 
-✍ **Write it with _style_—write it with _Marker_!**
+**How to install:**  
+1️⃣ Download `MarkerEditor_V(your version)_PORTABLE.exe` from "Releases."  
+2️⃣ Open the executable and start editing instantly!  
+
+### 🔹 **NSIS Installer**  
+✔ **Classic installation method for easy access.**  
+
+**How to install:**  
+1️⃣ Download `MarkerEditor_V(your version)_NSIS.exe` from "Releases."  
+2️⃣ Run the installer.  
+3️⃣ Launch **Marker Site Builder** from the Start Menu.  
+
+---
+## 🖥️ **How to Use Marker**  
+🚀 **Super intuitive workflow—you’ll get the hang of it in seconds!**  
+
+1️⃣ **Write Markdown** in the editor panel.  
+2️⃣ **Live preview updates instantly**—see your changes in real time.  
+3️⃣ **Pick an export format**—choose between **HTML, Markdown, or DOCX**.  
+4️⃣ **Save & download your file** with a single click!  
+
+---
+## 📸 **Sneak Peek**
+![Marker Site Builder Screenshot](./images/Capture.png)  
+
+---
+## ❤️ **Built with Passion**  
+🔹 Made with love by **@robert19066**  
+✍ **Write it with _style_—write it with _Marker_!**  
