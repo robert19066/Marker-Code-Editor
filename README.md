@@ -1,4 +1,4 @@
-# Marker Site Builder v0.2
+# Marker Site Builder
 
 🚀 **Marker Site Builder** is a **VS Code-style web-based editor** with a **glassmorphic UI**, **Markdown live preview**, and **multi-format export options**.  
 It allows users to **edit, preview, and export files** as **HTML, Markdown, or DOCX**, and includes a **dark/light mode toggle** and **draggable UI panels**.
