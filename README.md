@@ -12,7 +12,7 @@ It’s built for creators who need an intuitive, feature-rich editor to **write,
 ✅ **Glassmorphic UI**—modern, elegant, and smooth  
 ✅ **Resizable & draggable editor + preview panels**  
 ✅ **Dark/Light mode toggle with local storage memory**  
-✅ **Multi-format export**—save as **HTML, Markdown, DOCX**  
+✅ **Multi-format export**—save as **HTML, DOCX**  
 
 ---
 ## 🛠️ **Installation Guide**  
@@ -39,7 +39,7 @@ Marker Site Builder is available in **two formats**, so choose what fits your wo
 
 1️⃣ **Write Markdown** in the editor panel.  
 2️⃣ **Live preview updates instantly**—see your changes in real time.  
-3️⃣ **Pick an export format**—choose between **HTML, Markdown, or DOCX**.  
+3️⃣ **Pick an export format**—choose between **HTML or DOCX**.  
 4️⃣ **Save & download your file** with a single click!  
 
 ---
