@@ -6,24 +6,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updatePreview(markdown) {
     const doc = iframe.contentDocument || iframe.contentWindow.document;
-    const html = `
-      <!DOCTYPE html>
-      <html>
-        <body style="font-family: Arial, sans-serif; padding: 1rem;">
-          ${marked.parse(markdown)}
-        </body>
-      </html>
-    `;
-    doc.open();
-    doc.write(html);
-    doc.close();
+    const outputDiv = doc.getElementById('output');
+    if (outputDiv) {
+      outputDiv.innerHTML = marked.parse(markdown);
+    }
   }
 
-  // Update preview on every input event (live)
+  // Ensure the iframe is fully loaded before initial update.
+  iframe.addEventListener('load', () => {
+    updatePreview(textarea.value);
+  });
+
+  // Watch for input events to update the preview.
   textarea.addEventListener('input', () => {
     updatePreview(textarea.value);
   });
 
-  // Optional: initialize with empty or default content
-  updatePreview(textarea.value);
+  // If the iframe is already loaded, update immediately.
+  if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+    updatePreview(textarea.value);
+  }
 });

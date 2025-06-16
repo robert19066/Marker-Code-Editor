@@ -2,82 +2,203 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VS Code Style Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marker Site Builder V0.2</title>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
+  <script type="module" src="https://cdn.jsdelivr.net/npm/docx@7.1.2/build/index.js"></script>
+  <script type="module" src="./src/index.js"></script>
   <style>
     * {
       box-sizing: border-box;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
     body {
       margin: 0;
       font-family: 'Fira Code', monospace;
-      background-color: #1e1e1e;
-      color: #d4d4d4;
+      background: linear-gradient(135deg, #141414 0%, #222 100%);
+      backdrop-filter: blur(20px);
+      color: #e0e0e0;
       height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+      user-select: none;
     }
-
     #toolbar {
-      background-color: #252526;
-      padding: 0.75rem;
+      width: 90%;
+      background: rgba(30, 30, 30, 0.75);
+      backdrop-filter: blur(15px);
+      padding: 1rem 1.5rem;
       display: flex;
-      gap: 0.5rem;
-      border-bottom: 1px solid #333;
+      gap: 1rem;
+      align-items: center;
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 10;
+      animation: slideDown 0.6s ease forwards;
     }
-
-    button {
-      background-color: #3c3c3c;
-      color: #dcdcdc;
-      border: 1px solid #555;
-      border-radius: 4px;
-      padding: 0.4rem 1rem;
-      font-family: inherit;
+    @keyframes slideDown {
+      0% {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #e0e0e0;
+      text-shadow: 0 0 8px #4f97ff;
+      flex-grow: 1;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    button, a.download-link {
+      background: rgba(40, 40, 40, 0.6);
+      backdrop-filter: blur(12px);
+      color: #a0c8ff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.5rem 1.2rem;
       font-size: 1rem;
       cursor: pointer;
-    }
-
-    #editor-layout {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      font-weight: 600;
+      user-select: none;
+      transition: background 0.4s ease, color 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
       display: flex;
-      flex: 1;
-      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
-
+    button:hover, a.download-link:hover {
+      background: #2c60ff;
+      color: #fff;
+      transform: scale(1.07);
+      box-shadow: 0 8px 20px rgba(44, 96, 255, 0.8);
+    }
+    #editor-layout {
+      width: 90%;
+      flex: 1;
+      display: flex;
+      gap: 12px;
+      padding: 20px 0;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
     textarea {
       width: 50%;
       height: 100%;
-      background-color: #1e1e1e;
-      color: #d4d4d4;
+      background: rgba(40, 40, 40, 0.7);
+      backdrop-filter: blur(15px);
+      color: #e0e0e0;
+      border-radius: 14px;
+      padding: 1.4rem 1.6rem;
+      font-size: 1.05rem;
       border: none;
-      padding: 1rem;
-      font-size: 1rem;
-      resize: none;
       outline: none;
-      border-right: 1px solid #3c3c3c;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      resize: none;
+      font-weight: 500;
+      line-height: 1.5;
+      font-family: 'Fira Code', monospace;
+      letter-spacing: 0.02em;
+      transition: background 0.3s ease;
     }
-
+    textarea:focus {
+      background: #1c1c1c;
+      box-shadow: 0 0 12px 3px #2c60ff;
+      color: #d0e0ff;
+    }
     iframe {
       width: 50%;
       height: 100%;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
       border: none;
-      background-color: #ffffff;
+      transition: box-shadow 0.3s ease;
+    }
+    iframe:hover {
+      box-shadow: 0 0 30px 6px #2c60ff;
     }
   </style>
-  <script type="module" src="/src/index.js"></script>
-
 </head>
 <body>
   <div id="toolbar">
-    <h1>Marker Site Builder V0.1 BETA</h1>
-    <a href="temp-result.html" download="marked_yourcode">Download HTML</a>
+    <h1>Marker Site Builder V0.2</h1>
+    <a href="temp-result.html" download="marked_yourcode" class="download-link" id="download-html-link">Download HTML</a>
+    <button id="download-docx-btn">Download DOCX</button>
   </div>
 
   <div id="editor-layout">
     <textarea id="temp-result" placeholder="Write your HTML here..."></textarea>
-    <iframe id="preview"  src="./temp-result.html" frameborder="0"></iframe>
-
+    <iframe id="preview" src="./temp-result.html" frameborder="0"></iframe>
   </div>
+
+  <script type="module">
+    import { Document, Packer, Paragraph, TextRun } from "https://cdn.jsdelivr.net/npm/docx@7.1.2/build/index.js";
+
+    const textarea = document.getElementById('temp-result');
+    const iframe = document.getElementById('preview');
+    const downloadHtmlLink = document.getElementById('download-html-link');
+    const downloadDocxBtn = document.getElementById('download-docx-btn');
+
+    // Live preview update and update downloadable HTML link
+    textarea.addEventListener('input', () => {
+      const content = textarea.value;
+      iframe.srcdoc = content;
+
+      const blob = new Blob([content], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      downloadHtmlLink.href = url;
+    });
+
+    // DOCX export
+    downloadDocxBtn.addEventListener('click', async () => {
+      const content = textarea.value;
+      const doc = new Document({
+        sections: [{
+          children: [
+            new Paragraph({
+              children: [new TextRun(content)],
+            }),
+          ],
+        }],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'exported.docx';
+      a.click();
+    });
+
+    // Initialize preview and download link on page load
+    window.addEventListener('load', () => {
+      const content = textarea.value;
+      iframe.srcdoc = content;
+
+      const blob = new Blob([content], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      downloadHtmlLink.href = url;
+    });
+  </script>
 </body>
 </html>

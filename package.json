@@ -1,18 +1,29 @@
 {
-  "name": "marker-editor",
-  "private": true,
-  "version": "0.0.0",
-  "type": "commonjs",
+  "name": "marker-site-builder",
+  "version": "0.0.2",
+  "description": "Next-gen Site Builder!",
   "main": "main.js",
-  "scripts": {
-    "build": "vite build",
-    "preview": "vite preview --port 4173 --host 0.0.0.0",
-    "dev": "vite"
+  "author": {
+    "name": "robert19066",
+    "email": "andronic.robert12@gmail.com"
   },
-  "devDependencies": {
-    "vite": "^6.3.5"
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder"
   },
   "dependencies": {
-    "marked": "^15.0.12"
+    
+    "marked": "^9.0.0"
+  },
+  "devDependencies": {
+    "electron": "^27.1.0",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "appId": "com.marker.sitebuilder",
+    "productName": "Marker Site Builder",
+    "win": {
+      "target": "portable"
+    }
   }
 }

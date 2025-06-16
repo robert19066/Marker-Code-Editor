@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -8,7 +8,8 @@ app.whenReady().then(() => {
     width: 900,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: true,  // allows use of require in renderer
+      contextIsolation: false // required with nodeIntegration: true
     }
   });
 
@@ -21,9 +22,4 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
-
-});
-
-ipcMain.on('update-preview', (event, markdownText) => {
-  mainWindow.webContents.send('render-preview', markdownText);
 });
