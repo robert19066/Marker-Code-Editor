@@ -20,10 +20,19 @@
     "electron-builder": "^24.6.0"
   },
   "build": {
-    "appId": "com.marker.sitebuilder",
-    "productName": "Marker Site Builder",
-    "win": {
-      "target": "portable"
-    }
+  "appId": "com.marker.sitebuilder",
+  "productName": "Marker Site Builder",
+  "win": {
+    "target": ["nsis", "portable"]
+  },
+  "nsis": {
+    "artifactName": "MarkerEditor_V${version}_NSIS.exe"
+  },
+  "portable": {
+    "artifactName": "MarkerEditor_V${version}_PORTABLE.exe"
   }
+}
+
+
+
 }

@@ -5,6 +5,7 @@ let mainWindow;
 
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
+    icon: path.join(__dirname, 'images/Marker.ico'),
     width: 900,
     height: 600,
     webPreferences: {
