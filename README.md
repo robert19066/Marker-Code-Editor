@@ -34,14 +34,15 @@ Marker Site Builder is available in two formats:
 3. Open Marker Site Builder from the Start Menu.
 
 ## 🖥️ How to Use
-![marker-screenshot](./images/Capture.png)
+
 1. **Write Markdown/HTML** in the editor panel.  
 2. **Preview updates live** in real time.  
 3. **Choose an export format** (HTML, Markdown, or DOCX).  
 4. **Download your file instantly.**  
 
 ---
-
+![marker-screenshot](./images/Capture.png)
+---
 
 🛠 **Made with love by** `robert19066`  
 
