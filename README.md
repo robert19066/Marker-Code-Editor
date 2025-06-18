@@ -6,6 +6,11 @@
 
 **Marker Site Builder** is a sleek, **VS Code-inspired web editor** with a stunning **glassmorphic macOS-style UI**, **live Markdown preview**, and **multi-format export options**.  
 Built for creators who want a smooth, intuitive, and powerful editing experience to **write, preview, and export** their work effortlessly.  
+## NOTE:
+- We don't have linux compatability yet
+- The repository is open for forks
+- Any promoting will be apreciated
+- Development takes time
 
 ---
 
@@ -30,6 +35,10 @@ Marker Site Builder is available for **Windows** and **Linux**, packaged with El
 1️⃣ Download `MarkerEditor_V{version}_PORTABLE.exe` from [Releases].  
 2️⃣ Run the `.exe` and start editing instantly!  
 
+### Updating:
+For PORTABLE:
+- install the new executable is that easy
+
 ---
 
 ### 🔹 **Windows NSIS Installer**  
@@ -38,7 +47,13 @@ Marker Site Builder is available for **Windows** and **Linux**, packaged with El
 **Steps:**  
 1️⃣ Download `MarkerEditor_V{version}_NSIS.exe` from [Releases].  
 2️⃣ Run the installer.  
-3️⃣ Launch Marker Site Builder from your Start Menu.  
+3️⃣ Launch Marker Site Builder from your Start Menu. 
+
+### Updating
+For NSIS:
+- Take the new exe file
+- Run it
+- Your Marker version should be updated!
 
 ---
 
