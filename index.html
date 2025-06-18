@@ -4,19 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Marker Site Builder V0.2</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
-  <script type="module" src="https://cdn.jsdelivr.net/npm/docx@7.1.2/build/index.js"></script>
-  <script type="module" src="./src/index.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./public/style.css" />
+
+  <!-- marked for markdown parsing -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"></script>
+
+  <!-- html-docx-js for DOCX export -->
+  <script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.min.js"></script>
+
   <style>
-    * {
-      box-sizing: border-box;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    /* Basic layout styles */
     body {
       margin: 0;
       font-family: 'Fira Code', monospace;
       background: linear-gradient(135deg, #141414 0%, #222 100%);
-      backdrop-filter: blur(20px);
       color: #e0e0e0;
       height: 100vh;
       display: flex;
@@ -37,17 +41,6 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.6);
       position: relative;
       z-index: 10;
-      animation: slideDown 0.6s ease forwards;
-    }
-    @keyframes slideDown {
-      0% {
-        transform: translateY(-30px);
-        opacity: 0;
-      }
-      100% {
-        transform: translateY(0);
-        opacity: 1;
-      }
     }
     h1 {
       margin: 0;
@@ -90,17 +83,6 @@
       gap: 12px;
       padding: 20px 0;
       overflow: hidden;
-      animation: fadeInUp 0.8s ease forwards;
-    }
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
     textarea {
       width: 50%;
@@ -143,61 +125,74 @@
 <body>
   <div id="toolbar">
     <h1>Marker Site Builder V0.2</h1>
-    <a href="temp-result.html" download="marked_yourcode" class="download-link" id="download-html-link">Download HTML</a>
-    <button id="download-docx-btn">Download DOCX</button>
+    <a href="#" download="marked_yourcode.html" class="download-link" id="download-html-link">Download HTML</a>
+    <button id="download-docx-btn">Export DOCX</button>
   </div>
 
   <div id="editor-layout">
-    <textarea id="temp-result" placeholder="Write your HTML here..."></textarea>
-    <iframe id="preview" src="./temp-result.html" frameborder="0"></iframe>
+    <textarea id="temp-result" placeholder="Write your Markdown here..."># Hello World
+
+This is **Markdown** preview with DOCX export.</textarea>
+    <iframe id="preview" sandbox="allow-same-origin"></iframe>
   </div>
 
   <script type="module">
-    import { Document, Packer, Paragraph, TextRun } from "https://cdn.jsdelivr.net/npm/docx@7.1.2/build/index.js";
+    import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
     const textarea = document.getElementById('temp-result');
     const iframe = document.getElementById('preview');
     const downloadHtmlLink = document.getElementById('download-html-link');
     const downloadDocxBtn = document.getElementById('download-docx-btn');
 
-    // Live preview update and update downloadable HTML link
+    function updatePreview(markdown) {
+      const html = marked.parse(markdown);
+
+      // Full HTML for iframe preview with external CSS link
+      const previewHTML = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <title>Preview</title>
+          <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+          <link rel="stylesheet" href="./public/style.css" />
+        </head>
+        <body>
+          <div id="output">${html}</div>
+        </body>
+        </html>`;
+
+      iframe.srcdoc = previewHTML;
+
+      // Update downloadable HTML link blob
+      const blob = new Blob([previewHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      downloadHtmlLink.href = url;
+    }
+
     textarea.addEventListener('input', () => {
-      const content = textarea.value;
-      iframe.srcdoc = content;
-
-      const blob = new Blob([content], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      downloadHtmlLink.href = url;
+      updatePreview(textarea.value);
     });
 
-    // DOCX export
-    downloadDocxBtn.addEventListener('click', async () => {
-      const content = textarea.value;
-      const doc = new Document({
-        sections: [{
-          children: [
-            new Paragraph({
-              children: [new TextRun(content)],
-            }),
-          ],
-        }],
-      });
-
-      const blob = await Packer.toBlob(doc);
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'exported.docx';
-      a.click();
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      updatePreview(textarea.value);
     });
 
-    // Initialize preview and download link on page load
-    window.addEventListener('load', () => {
-      const content = textarea.value;
-      iframe.srcdoc = content;
-
-      const blob = new Blob([content], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      downloadHtmlLink.href = url;
+    // DOCX export with html-docx-js
+    downloadDocxBtn.addEventListener('click', () => {
+      try {
+        const content = marked.parse(textarea.value); // convert markdown to HTML
+        const converted = htmlDocx.asBlob(content);
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(converted);
+        a.download = 'exported.docx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (e) {
+        alert('Failed exporting DOCX: ' + e.message);
+      }
     });
   </script>
 </body>
