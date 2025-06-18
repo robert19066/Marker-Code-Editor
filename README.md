@@ -1,8 +1,4 @@
-Got it! Here's the full README in editor mode, no extra chat text outside the code block:
 
-markdown
-Copy
-Edit
 # 🚀 Marker Site Builder  
 ![Marker Site Builder Logo](./images/Marker.ico)  
 
