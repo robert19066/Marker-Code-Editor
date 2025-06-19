@@ -61,6 +61,14 @@ For NSIS:
 ## 📸 Sneak Peek
 ![photo](./images/Capture.png)
 
+# Future ideas(for V4)
+## NOTE - THIS IDEAS ARE SUBJECT TO CHANGE!
+- Python execution(since Marker supports css,js and html with markdown)
+- Better UI
+- Linux compatability(verry soon)
+- Update manager
+- Overall improvements
+
 #### ❤️ Made with Passion
 🔹 Crafted by @robert19066
 ✍ Write with _style_ — write with _**Marker**_!
