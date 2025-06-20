@@ -1,6 +1,17 @@
-
+<!-- markdownlint-configure-file {
+  "MD013": {
+    "code_blocks": false,
+    "tables": false
+  },
+  "MD033": false,
+  "MD041": false
+} -->
 # 🚀 Marker Site Builder  
-![Marker Site Builder Logo](./images/Marker.ico)  
+![Status](https://img.shields.io/badge/Repository%20Status-Maintained-brightgreen)  
+![Forks](https://img.shields.io/badge/Forks-Open-blue)  
+![Virus Free](https://img.shields.io/badge/Virus--free-Yes-success)  
+![Built With](https://img.shields.io/badge/Built%20with-JavaScript-yellow)
+ 
 
 ## Note:
 - The product is 100% virus-free,you can check
@@ -18,7 +29,8 @@ Built for creators who want a smooth, intuitive, and powerful editing experience
 - Development takes time
 
 ---
-# Repository status: 💚Active💚
+
+
 
 
 ## 🌟 **Why Choose Marker?**  
