@@ -2,6 +2,11 @@
 # 🚀 Marker Site Builder  
 ![Marker Site Builder Logo](./images/Marker.ico)  
 
+## Note:
+- The product is 100% virus-free,you can check
+- We know we have an problem with installing executables,due to the fact browslers say it is not commonly installed.
+- Please report the executables as SAFE
+
 ### **Your Next-Gen Site Editing Tool**  
 
 **Marker Site Builder** is a sleek, **VS Code-inspired web editor** with a stunning **glassmorphic macOS-style UI**, **live Markdown preview**, and **multi-format export options**.  
