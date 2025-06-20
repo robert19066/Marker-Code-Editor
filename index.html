@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Marker Site Builder V4</title>
+<title>Marker Site Builder V5</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
@@ -100,12 +100,13 @@
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/markdown/markdown.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/htmlmixed/htmlmixed.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/javascript/javascript.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/python/python.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/show-hint.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/html-hint.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/edit/closetag.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/edit/closebrackets.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/javascript-hint.js"></script>
-
 
 <script type="module" src="https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.min.js"></script>
@@ -114,15 +115,19 @@
 <body>
   <div id="toolbar">
     <img id="logo" src="https://cdn-icons-png.flaticon.com/512/919/919832.png" alt="Markdown Logo" />
-    <h1 id="title">Marker Site Builder</h1>
+    <h1 id="title">Marker Code Editor <strong><i>V5</i></strong></h1>
     <select id="mode-toggle">
       <option value="markdown">Markdown</option>
       <option value="html">HTML</option>
       <option value="javascript">JavaScript</option>
+      <option value="python">Python</option>
     </select>
     <a href="#" download="marked_preview.html" class="download-link" id="download-html-link">Download HTML</a>
     <button id="download-docx-btn">Export DOCX</button>
     <a href="#" download="script.js" class="download-link" id="download-js-link" style="display:none;">Download JS</a>
+    <!-- Add this inside the #toolbar div -->
+<button id="run-python-btn" style="display: none;">Run Python</button> <!-- NEW -->
+
   </div>
 
   <div id="editor-layout">
@@ -164,7 +169,7 @@
 
   editor.on("keyup", (cm, event) => {
     if (
-      currentMode === 'javascript' &&
+      (currentMode === 'javascript' || currentMode === 'python') &&
       autocompleteEnabled &&
       !cm.state.completionActive &&
       event.keyCode !== 13 &&
@@ -176,11 +181,15 @@
 
   editor.on("change", () => updatePreview(editor.getValue()));
 
-  function updatePreview(code) {
+  async function updatePreview(code) {
     if (currentMode === 'javascript') {
       iframe.style.display = 'none';
       jsOutput.style.display = 'block';
       runJS(code);
+    } else if (currentMode === 'python') {
+      iframe.style.display = 'none';
+      jsOutput.style.display = 'block';
+      await runPython(code);
     } else {
       iframe.style.display = 'block';
       jsOutput.style.display = 'none';
@@ -219,6 +228,42 @@
     console.log = originalConsoleLog;
   }
 
+  async function runPython(code) {
+    jsOutput.textContent = 'Running Python code...\n';
+
+    try {
+      const response = await fetch('https://emkc.org/api/v1/piston/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          language: 'python',
+          source: code,
+        })
+      });
+
+      if (!response.ok) {
+        jsOutput.textContent = `Error: ${response.statusText} (status: ${response.status})`;
+        return;
+      }
+
+      const data = await response.json();
+
+      const stdout = data.stdout || data.output || '';
+      const stderr = data.stderr || '';
+
+      jsOutput.textContent = '';
+      if (stdout) jsOutput.textContent += stdout;
+      if (stderr) jsOutput.textContent += stderr;
+
+      if (!stdout && !stderr) {
+        jsOutput.textContent = 'No output from script (empty stdout and stderr).';
+      }
+
+    } catch (error) {
+      jsOutput.textContent = 'Error running Python code: ' + error.message;
+    }
+  }
+
   function setThemeAndLogo(mode) {
     let theme, logoSrc, color;
     switch (mode) {
@@ -237,6 +282,15 @@
         logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png';
         color = '#b58900';
         break;
+      case 'python':
+        theme = 'dracula';
+        logoSrc = 'https://cdn-icons-png.flaticon.com/512/919/919852.png';
+        color = '#3572A5';
+        break;
+      default:
+        theme = 'brown';
+        logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968318.png';
+        color = '#5a3e36';
     }
 
     editor.setOption('theme', theme);
@@ -251,20 +305,19 @@
     editor.setOption("mode",
       currentMode === "markdown" ? "markdown" :
       currentMode === "html" ? "htmlmixed" :
-      "javascript"
+      currentMode === "javascript" ? "javascript" :
+      currentMode === "python" ? "python" : "markdown"
     );
 
-    // Show/hide export buttons
-    if (currentMode === 'javascript') {
+    if (currentMode === 'javascript' || currentMode === 'python') {
       downloadJsLink.style.display = 'inline-block';
       downloadHtmlLink.style.display = 'none';
       downloadDocxBtn.style.display = 'none';
 
-      // Trigger autocomplete as soon as you switch to JS
-      if (autocompleteEnabled) {
-        setTimeout(() => {
-          CodeMirror.commands.autocomplete(editor, null, { completeSingle: false });
-        }, 150);
+      if (currentMode === 'python') {
+        downloadJsLink.textContent = 'Download PY';
+      } else {
+        downloadJsLink.textContent = 'Download JS';
       }
     } else {
       downloadJsLink.style.display = 'none';
@@ -276,38 +329,43 @@
     updatePreview(editor.getValue());
   });
 
-  window.addEventListener('DOMContentLoaded', () => {
-    setThemeAndLogo(currentMode);
-    updatePreview(editor.getValue());
+  // Initial load
+  setThemeAndLogo(currentMode);
+  updatePreview(editor.getValue());
+
+  // DOCX Export button
+  downloadDocxBtn.addEventListener('click', () => {
+    let content = '';
+    if (currentMode === 'markdown') {
+      content = marked.parse(editor.getValue());
+    } else if (currentMode === 'html') {
+      content = editor.getValue();
+    } else {
+      content = `<pre>${editor.getValue()}</pre>`;
+    }
+
+    const converted = window.htmlDocx.asBlob(content, { orientation: 'portrait', margins: { top: 720 } });
+    const url = URL.createObjectURL(converted);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'export.docx';
+    a.click();
+    URL.revokeObjectURL(url);
   });
 
+  // Download JS/PY file link
   downloadJsLink.addEventListener('click', () => {
     const code = editor.getValue();
-    const blob = new Blob([code], { type: 'application/javascript' });
+    let filename = currentMode === 'python' ? 'script.py' : 'script.js';
+    const mimeType = currentMode === 'python' ? 'text/x-python' : 'application/javascript';
+
+    const blob = new Blob([code], { type: mimeType });
     downloadJsLink.href = URL.createObjectURL(blob);
-    downloadJsLink.download = 'script.js';
+    downloadJsLink.download = filename;
   });
 
-  downloadDocxBtn.addEventListener('click', () => {
-    if (currentMode === 'javascript') {
-      alert('DOCX export is only available for Markdown and HTML modes.');
-      return;
-    }
-    const raw = editor.getValue();
-    const content = currentMode === 'markdown' ? marked.parse(raw) : raw;
-    try {
-      const blob = htmlDocx.asBlob(content);
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'exported.docx';
-      a.click();
-      a.remove();
-    } catch (e) {
-      alert('Failed exporting DOCX: ' + e.message);
-    }
-  });
 </script>
-
 
 </body>
 </html>

@@ -84,6 +84,8 @@ Run the newer `.exe` — it will overwrite the old version
    - `./MarkerEditor_V{version}.AppImage`  
    - *(Optional: Integrate with your system using AppImageLauncher)*
 
+---
+
 
 ## 📸 Sneak Peek
 ![photo](./images/Capture.png)
@@ -91,10 +93,9 @@ Run the newer `.exe` — it will overwrite the old version
 
 
 #### ❤️ Made with Passion
-🔹 Crafted by @robert19066
+🔹 Crafted by @robert19066  
 ✍ Write with _style_ — write with _**Marker**_!
 
-📢 Need Help?
-Join the discussion or file issues on GitHub.
+📢 Need Help?  
+Join the discussion or file issues on GitHub.  
 Your feedback makes Marker better!
-

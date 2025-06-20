@@ -1,6 +1,6 @@
 {
   "name": "marker-site-builder",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Next-gen Site Builder!",
   "main": "main.js",
   "author": {
@@ -8,11 +8,12 @@
     "email": "andronic.robert12@gmail.com"
   },
   "scripts": {
-    "start": "electron .",
-    "linux-pack": "electron-builder --linux",
-    "windows-pack": "electron-builder --win",
-    "pack-all": "electron-builder --win --linux"
-  },
+  "start": "electron .",
+  "linux-pack": "electron-builder --linux",
+  "windows-pack": "electron-builder --win",
+  "pack-all": "electron-builder --win --linux "
+},
+
   "dependencies": {
     
     "marked": "^9.0.0"
@@ -24,7 +25,8 @@
   "build": {
   "appId": "com.marker.sitebuilder",
   "productName": "Marker Site Builder",
-  "win": {
+  "win": { 
+    "icon": "images/icon.ico",
     "target": ["nsis", "portable"]
   },
   "nsis": {
@@ -34,6 +36,7 @@
     "artifactName": "MarkerEditor_Windows_V${version}_PORTABLE.exe"
   },
   "linux": {
+    "icon": "images/icon.ico",
     "target": ["AppImage", "deb"],
     "category": "Development"
     
@@ -44,5 +47,6 @@
   "deb": {
     "artifactName": "MarkerEditor_Linux_V${version}_Deb.deb"
   }
+  
 }
 }
