@@ -23,7 +23,6 @@
 **Marker Site Builder** is a sleek, **VS Code-inspired web editor** with a stunning **glassmorphic macOS-style UI**, **live Markdown preview**, and **multi-format export options**.  
 Built for creators who want a smooth, intuitive, and powerful editing experience to **write, preview, and export** their work effortlessly.  
 ## NOTE:
-- We don't have linux compatability yet
 - The repository is open for forks
 - Any promoting will be apreciated
 - Development takes time
