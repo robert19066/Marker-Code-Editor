@@ -28,34 +28,39 @@ Marker Site Builder is available for **Windows** and **Linux**, packaged with El
 
 ---
 
-# 🔹 **Windows Portable Version**  
-✔ No installation — just download and run!  
+### 🔹 Windows (Portable Version)  
+1. Download `MarkerEditor_V{version}_PORTABLE.exe` from the [Releases] section  
+2. Run the `.exe` file directly — no installation needed  
 
-**Steps:**  
-1️⃣ Download `MarkerEditor_V{version}_PORTABLE.exe` from [Releases].  
-2️⃣ Run the `.exe` and start editing instantly!  
-
-### Updating:
-For PORTABLE:
-- install the new executable is that easy
+**Updating:**  
+Simply replace the old `.exe` with the new one
 
 ---
 
-### 🔹 **Windows NSIS Installer**  
-✔ Classic installer with Start Menu shortcut.  
+### 🔹 Windows (NSIS Installer)  
+1. Download `MarkerEditor_V{version}_NSIS.exe`  
+2. Run the installer  
+3. Launch Marker from your Start Menu  
 
-**Steps:**  
-1️⃣ Download `MarkerEditor_V{version}_NSIS.exe` from [Releases].  
-2️⃣ Run the installer.  
-3️⃣ Launch Marker Site Builder from your Start Menu. 
-
-### Updating
-For NSIS:
-- Take the new exe file
-- Run it
-- Your Marker version should be updated!
+**Updating:**  
+Run the newer `.exe` — it will overwrite the old version
 
 ---
+
+### 🔹 Linux (.deb Package for Ubuntu/Debian)  
+1. Download `MarkerEditor_V{version}.deb`  
+2. Open a terminal and run:  
+   - `sudo dpkg -i MarkerEditor_Linux_V{version}_Deb.deb`  
+   - If needed: `sudo apt-get install -f`
+
+---
+
+### 🔹 Linux (AppImage)  
+1. Download `MarkerEditor_V{version}.AppImage`  
+2. In the terminal:  
+   - `chmod +x MarkerEditor_Linux_V{version}_AppImage.AppImage`  
+   - `./MarkerEditor_V{version}.AppImage`  
+   - *(Optional: Integrate with your system using AppImageLauncher)*
 
 
 ## 📸 Sneak Peek
