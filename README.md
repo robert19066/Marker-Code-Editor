@@ -13,6 +13,8 @@ Built for creators who want a smooth, intuitive, and powerful editing experience
 - Development takes time
 
 ---
+# Repository status: 💚Active💚
+
 
 ## 🌟 **Why Choose Marker?**  
 ✅ **Live Markdown preview** with instant rendering  
