@@ -1,200 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Marker Site Builder <V0 class="3"></V0></title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Marker Site Builder V4</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./public/style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
 
-  <!-- marked for markdown parsing -->
-  <script type="module" src="https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/show-hint.css" />
 
-  <!-- html-docx-js for DOCX export -->
-  <script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.min.js"></script>
+<!-- Default CodeMirror themes -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/theme/dracula.min.css" />
 
-  <style>
-    /* Basic layout styles */
-    body {
-      margin: 0;
-      font-family: 'Fira Code', monospace;
-      background: linear-gradient(135deg, #141414 0%, #222 100%);
-      color: #e0e0e0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow: hidden;
-      user-select: none;
-    }
-    #toolbar {
-      width: 90%;
-      background: rgba(30, 30, 30, 0.75);
-      backdrop-filter: blur(15px);
-      padding: 1rem 1.5rem;
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      border-radius: 14px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      position: relative;
-      z-index: 10;
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.5rem;
-      color: #e0e0e0;
-      text-shadow: 0 0 8px #4f97ff;
-      flex-grow: 1;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
-    button, a.download-link {
-      background: rgba(40, 40, 40, 0.6);
-      backdrop-filter: blur(12px);
-      color: #a0c8ff;
-      border: none;
-      border-radius: 12px;
-      padding: 0.5rem 1.2rem;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      font-weight: 600;
-      user-select: none;
-      transition: background 0.4s ease, color 0.3s ease, transform 0.2s ease;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    button:hover, a.download-link:hover {
-      background: #2c60ff;
-      color: #fff;
-      transform: scale(1.07);
-      box-shadow: 0 8px 20px rgba(44, 96, 255, 0.8);
-    }
-    #editor-layout {
-      width: 90%;
-      flex: 1;
-      display: flex;
-      gap: 12px;
-      padding: 20px 0;
-      overflow: hidden;
-    }
-    textarea {
-      width: 50%;
-      height: 100%;
-      background: rgba(40, 40, 40, 0.7);
-      backdrop-filter: blur(15px);
-      color: #e0e0e0;
-      border-radius: 14px;
-      padding: 1.4rem 1.6rem;
-      font-size: 1.05rem;
-      border: none;
-      outline: none;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      resize: none;
-      font-weight: 500;
-      line-height: 1.5;
-      font-family: 'Fira Code', monospace;
-      letter-spacing: 0.02em;
-      transition: background 0.3s ease;
-    }
-    textarea:focus {
-      background: #1c1c1c;
-      box-shadow: 0 0 12px 3px #2c60ff;
-      color: #d0e0ff;
-    }
-    iframe {
-      width: 50%;
-      height: 100%;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      border: none;
-      transition: box-shadow 0.3s ease;
-    }
-    iframe:hover {
-      box-shadow: 0 0 30px 6px #2c60ff;
-    }
-  </style>
+<style>
+  /* Custom themes */
+  .cm-s-brown.CodeMirror { background: #f4ede0; color: #5a3e36; }
+  .cm-s-brown .CodeMirror-cursor { border-left: 1px solid #5a3e36; }
+  .cm-s-brown .CodeMirror-gutters { background: #e3d6cc; border-right: 1px solid #5a3e36; }
+
+  .cm-s-yellow.CodeMirror { background: #fff9db; color: #b58900; }
+  .cm-s-yellow .CodeMirror-cursor { border-left: 1px solid #b58900; }
+  .cm-s-yellow .CodeMirror-gutters { background: #fff3b0; border-right: 1px solid #b58900; }
+
+  .cm-s-red.CodeMirror { background: #ffeaea; color: #b22222; }
+  .cm-s-red .CodeMirror-cursor { border-left: 1px solid #b22222; }
+  .cm-s-red .CodeMirror-gutters { background: #ffcece; border-right: 1px solid #b22222; }
+
+  /* Body styling */
+  body {
+    margin: 0; font-family: 'Fira Code', monospace;
+    background: linear-gradient(135deg, #141414 0%, #222 100%);
+    color: #e0e0e0; height: 100vh;
+    display: flex; flex-direction: column; align-items: center; overflow: hidden;
+  }
+
+  /* Toolbar styling */
+  #toolbar {
+    width: 90%; background: rgba(30,30,30,0.75);
+    backdrop-filter: blur(15px); padding: 1rem 1.5rem;
+    display: flex; gap: 1rem; align-items: center;
+    border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    position: relative; z-index: 10;
+    transition: color 0.5s ease;
+  }
+
+  #logo {
+    height: 28px;
+    width: 28px;
+    margin-right: 0.75rem;
+    transition: filter 0.5s ease;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    transition: color 0.5s ease;
+  }
+
+  select, button, a.download-link {
+    background: rgba(40,40,40,0.6);
+    backdrop-filter: blur(12px);
+    color: #a0c8ff; border: none; border-radius: 12px;
+    padding: 0.5rem 1rem; font-size: 1rem; cursor: pointer;
+    font-weight: 600; transition: all 0.3s ease;
+  }
+  select:hover, button:hover, a.download-link:hover {
+    background: #2c60ff; color: #fff; transform: scale(1.06);
+  }
+
+  #editor-layout {
+    width: 90%; flex: 1; display: flex; gap: 12px; padding: 20px 0; overflow: hidden;
+  }
+  .CodeMirror {
+    width: 50%; height: 100%; font-size: 1.05rem;
+    border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  iframe, #js-output {
+    width: 50%; height: 100%; border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    background: #fff; color: #000; padding: 12px; font-family: monospace;
+    overflow-y: auto; white-space: pre-wrap; border: none;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  #js-output {
+    display: none;
+    background: #111;
+    color: #0f0;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/htmlmixed/htmlmixed.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/javascript/javascript.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/show-hint.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/html-hint.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/edit/closetag.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/edit/closebrackets.js"></script>
+
+<script type="module" src="https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.min.js"></script>
+
 </head>
 <body>
   <div id="toolbar">
-    <h1>Marker Site Builder V0.2</h1>
-    <a href="#" download="marked_yourcode.html" class="download-link" id="download-html-link">Download HTML</a>
+    <img id="logo" src="https://cdn-icons-png.flaticon.com/512/919/919832.png" alt="Markdown Logo" />
+    <h1 id="title">Marker Site Builder</h1>
+    <select id="mode-toggle">
+      <option value="markdown">Markdown</option>
+      <option value="html">HTML</option>
+      <option value="javascript">JavaScript</option>
+    </select>
+    <a href="#" download="marked_preview.html" class="download-link" id="download-html-link">Download HTML</a>
     <button id="download-docx-btn">Export DOCX</button>
+    <a href="#" download="script.js" class="download-link" id="download-js-link" style="display:none;">Download JS</a>
   </div>
 
   <div id="editor-layout">
-    <textarea id="temp-result" placeholder="Write your Markdown here..."># Hello World
-
-This is **Markdown** preview with DOCX export.</textarea>
+    <textarea id="temp-result"></textarea>
     <iframe id="preview" sandbox="allow-same-origin"></iframe>
+    <pre id="js-output"></pre>
   </div>
 
-  <script type="module">
-    import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+<script type="module">
+  import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
 
-    const textarea = document.getElementById('temp-result');
-    const iframe = document.getElementById('preview');
-    const downloadHtmlLink = document.getElementById('download-html-link');
-    const downloadDocxBtn = document.getElementById('download-docx-btn');
+  const rawTextarea = document.getElementById('temp-result');
+  const iframe = document.getElementById('preview');
+  const jsOutput = document.getElementById('js-output');
 
-    function updatePreview(markdown) {
-      const html = marked.parse(markdown);
+  const downloadHtmlLink = document.getElementById('download-html-link');
+  const downloadDocxBtn = document.getElementById('download-docx-btn');
+  const downloadJsLink = document.getElementById('download-js-link');
+  const modeToggle = document.getElementById('mode-toggle');
 
-      // Full HTML for iframe preview with external CSS link
+  const logo = document.getElementById('logo');
+  const title = document.getElementById('title');
+  const toolbar = document.getElementById('toolbar');
+
+  let currentMode = 'markdown';
+
+  const editor = CodeMirror.fromTextArea(rawTextarea, {
+    lineNumbers: true,
+    mode: "markdown",
+    theme: "brown",  // set default to brown custom theme
+    lineWrapping: true,
+    autoCloseBrackets: true,
+    autoCloseTags: true,
+    extraKeys: {
+      "Ctrl-Space": "autocomplete"
+    }
+  });
+
+  editor.on("keyup", (cm, event) => {
+    if (currentMode === 'html' && !cm.state.completionActive && event.keyCode !== 13 && event.keyCode !== 27) {
+      CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
+    }
+  });
+
+  function updatePreview(code) {
+    if (currentMode === 'javascript') {
+      iframe.style.display = 'none';
+      jsOutput.style.display = 'block';
+      runJS(code);
+    } else {
+      iframe.style.display = 'block';
+      jsOutput.style.display = 'none';
+
+      const html = currentMode === 'markdown' ? marked.parse(code) : code;
       const previewHTML = `
         <!DOCTYPE html>
         <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <title>Preview</title>
-          <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-          <link rel="stylesheet" href="./public/style.css" />
-        </head>
-        <body>
-          <div id="output">${html}</div>
-        </body>
+          <head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"></head>
+          <body><div id="output">${html}</div></body>
         </html>`;
 
       iframe.srcdoc = previewHTML;
 
-      // Update downloadable HTML link blob
       const blob = new Blob([previewHTML], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       downloadHtmlLink.href = url;
     }
+  }
 
-    textarea.addEventListener('input', () => {
-      updatePreview(textarea.value);
-    });
+  function runJS(code) {
+    jsOutput.textContent = '';
 
-    // Initialize on load
-    window.addEventListener('DOMContentLoaded', () => {
-      updatePreview(textarea.value);
-    });
+    const originalConsoleLog = console.log;
 
-    // DOCX export with html-docx-js
-    downloadDocxBtn.addEventListener('click', () => {
-      try {
-        const content = marked.parse(textarea.value); // convert markdown to HTML
-        const converted = htmlDocx.asBlob(content);
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(converted);
-        a.download = 'exported.docx';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      } catch (e) {
-        alert('Failed exporting DOCX: ' + e.message);
-      }
-    });
-  </script>
+    console.log = function(...args) {
+      jsOutput.textContent += args.join(' ') + '\n';
+      originalConsoleLog.apply(console, args);
+    };
+
+    try {
+      eval(code);
+    } catch (e) {
+      jsOutput.textContent += 'Error: ' + e.message + '\n';
+    }
+
+    console.log = originalConsoleLog;
+  }
+
+  editor.on("change", () => updatePreview(editor.getValue()));
+
+  function setThemeAndLogo(mode) {
+    let theme, logoSrc, color;
+
+    switch(mode) {
+      case 'markdown':
+  theme = 'brown';
+  logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968318.png'; // visible markdown icon
+  color = '#5a3e36';
+  break;
+case 'html':
+  theme = 'red';
+  logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968267.png'; // matching html icon
+  color = '#b22222';
+  break;
+case 'javascript':
+  theme = 'yellow';
+  logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png'; // nice js icon
+  color = '#b58900';
+  break;
+
+
+    editor.setOption('theme', theme);
+    logo.src = logoSrc;
+
+    // Animate color changes smoothly
+    title.style.color = color;
+    toolbar.style.color = color;
+  }
+
+  modeToggle.addEventListener("change", () => {
+    currentMode = modeToggle.value;
+
+    editor.setOption("mode",
+      currentMode === "markdown" ? "markdown" :
+      currentMode === "html" ? "htmlmixed" :
+      "javascript"
+    );
+
+    // Show/hide buttons depending on mode
+    if (currentMode === 'javascript') {
+      downloadJsLink.style.display = 'inline-block';
+      downloadHtmlLink.style.display = 'none';
+      downloadDocxBtn.style.display = 'none';
+    } else {
+      downloadJsLink.style.display = 'none';
+      downloadHtmlLink.style.display = 'inline-block';
+      downloadDocxBtn.style.display = 'inline-block';
+    }
+
+    setThemeAndLogo(currentMode);
+    updatePreview(editor.getValue());
+  });
+
+  // Export JS only for JS mode
+  downloadJsLink.addEventListener('click', () => {
+    const code = editor.getValue();
+    const blob = new Blob([code], { type: 'application/javascript' });
+    downloadJsLink.href = URL.createObjectURL(blob);
+    downloadJsLink.download = 'script.js';
+  });
+
+  // Export DOCX only for markdown and html
+  downloadDocxBtn.addEventListener('click', () => {
+    if (currentMode === 'javascript') {
+      alert('DOCX export is only available for Markdown and HTML modes.');
+      return;
+    }
+    const raw = editor.getValue();
+    const content = currentMode === 'markdown' ? marked.parse(raw) : raw;
+    try {
+      const blob = htmlDocx.asBlob(content);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'exported.docx';
+      a.click();
+      a.remove();
+    } catch (e) {
+      alert('Failed exporting DOCX: ' + e.message);
+    }
+  });
+
+  // Initial setup
+  window.addEventListener('DOMContentLoaded', () => {
+    setThemeAndLogo(currentMode);
+    updatePreview(editor.getValue());
+  });
+
+</script>
 </body>
 </html>
-<!--CMON GIT CMONNNNNNNNNN-->
