@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "electron .",
-    "package": "electron-builder"
+    "linux-pack": "electron-builder --linux",
+    "windows-pack": "electron-builder --win",
+    "pack-all": "electron-builder --win --linux"
   },
   "dependencies": {
     
@@ -26,13 +28,21 @@
     "target": ["nsis", "portable"]
   },
   "nsis": {
-    "artifactName": "MarkerEditor_V${version}_NSIS.exe"
+    "artifactName": "MarkerEditor_Windows_V${version}_NSIS.exe"
   },
   "portable": {
-    "artifactName": "MarkerEditor_V${version}_PORTABLE.exe"
+    "artifactName": "MarkerEditor_Windows_V${version}_PORTABLE.exe"
+  },
+  "linux": {
+    "target": ["AppImage", "deb"],
+    "category": "Development"
+    
+  },
+  "appImage": {
+    "artifactName": "MarkerEditor_Linux_V${version}_AppImage.AppImage"
+  },
+  "deb": {
+    "artifactName": "MarkerEditor_Linux_V${version}_Deb.deb"
   }
 }
-
-
-
 }

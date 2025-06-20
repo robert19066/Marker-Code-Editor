@@ -104,6 +104,8 @@
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/html-hint.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/edit/closetag.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/edit/closebrackets.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/javascript-hint.js"></script>
+
 
 <script type="module" src="https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.min.js"></script>
@@ -146,11 +148,12 @@
   const toolbar = document.getElementById('toolbar');
 
   let currentMode = 'markdown';
+  let autocompleteEnabled = true; // Only used for JavaScript mode
 
   const editor = CodeMirror.fromTextArea(rawTextarea, {
     lineNumbers: true,
     mode: "markdown",
-    theme: "brown",  // set default to brown custom theme
+    theme: "brown",
     lineWrapping: true,
     autoCloseBrackets: true,
     autoCloseTags: true,
@@ -160,10 +163,18 @@
   });
 
   editor.on("keyup", (cm, event) => {
-    if (currentMode === 'html' && !cm.state.completionActive && event.keyCode !== 13 && event.keyCode !== 27) {
+    if (
+      currentMode === 'javascript' &&
+      autocompleteEnabled &&
+      !cm.state.completionActive &&
+      event.keyCode !== 13 &&
+      event.keyCode !== 27
+    ) {
       CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
     }
   });
+
+  editor.on("change", () => updatePreview(editor.getValue()));
 
   function updatePreview(code) {
     if (currentMode === 'javascript') {
@@ -178,10 +189,10 @@
       const previewHTML = `
         <!DOCTYPE html>
         <html lang="en">
-          <head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"></head>
-          <body><div id="output">${html}</div></body>
+        <head><meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"></head>
+        <body><div id="output">${html}</div></body>
         </html>`;
-
       iframe.srcdoc = previewHTML;
 
       const blob = new Blob([previewHTML], { type: 'text/html' });
@@ -192,10 +203,9 @@
 
   function runJS(code) {
     jsOutput.textContent = '';
-
     const originalConsoleLog = console.log;
 
-    console.log = function(...args) {
+    console.log = function (...args) {
       jsOutput.textContent += args.join(' ') + '\n';
       originalConsoleLog.apply(console, args);
     };
@@ -209,33 +219,28 @@
     console.log = originalConsoleLog;
   }
 
-  editor.on("change", () => updatePreview(editor.getValue()));
-
   function setThemeAndLogo(mode) {
     let theme, logoSrc, color;
-
-    switch(mode) {
+    switch (mode) {
       case 'markdown':
-  theme = 'brown';
-  logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968318.png'; // visible markdown icon
-  color = '#5a3e36';
-  break;
-case 'html':
-  theme = 'red';
-  logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968267.png'; // matching html icon
-  color = '#b22222';
-  break;
-case 'javascript':
-  theme = 'yellow';
-  logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png'; // nice js icon
-  color = '#b58900';
-  break;
+        theme = 'brown';
+        logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968318.png';
+        color = '#5a3e36';
+        break;
+      case 'html':
+        theme = 'red';
+        logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968267.png';
+        color = '#b22222';
+        break;
+      case 'javascript':
+        theme = 'yellow';
+        logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png';
+        color = '#b58900';
+        break;
     }
 
     editor.setOption('theme', theme);
     logo.src = logoSrc;
-
-    // Animate color changes smoothly
     title.style.color = color;
     toolbar.style.color = color;
   }
@@ -249,11 +254,18 @@ case 'javascript':
       "javascript"
     );
 
-    // Show/hide buttons depending on mode
+    // Show/hide export buttons
     if (currentMode === 'javascript') {
       downloadJsLink.style.display = 'inline-block';
       downloadHtmlLink.style.display = 'none';
       downloadDocxBtn.style.display = 'none';
+
+      // Trigger autocomplete as soon as you switch to JS
+      if (autocompleteEnabled) {
+        setTimeout(() => {
+          CodeMirror.commands.autocomplete(editor, null, { completeSingle: false });
+        }, 150);
+      }
     } else {
       downloadJsLink.style.display = 'none';
       downloadHtmlLink.style.display = 'inline-block';
@@ -264,7 +276,11 @@ case 'javascript':
     updatePreview(editor.getValue());
   });
 
-  // Export JS only for JS mode
+  window.addEventListener('DOMContentLoaded', () => {
+    setThemeAndLogo(currentMode);
+    updatePreview(editor.getValue());
+  });
+
   downloadJsLink.addEventListener('click', () => {
     const code = editor.getValue();
     const blob = new Blob([code], { type: 'application/javascript' });
@@ -272,7 +288,6 @@ case 'javascript':
     downloadJsLink.download = 'script.js';
   });
 
-  // Export DOCX only for markdown and html
   downloadDocxBtn.addEventListener('click', () => {
     if (currentMode === 'javascript') {
       alert('DOCX export is only available for Markdown and HTML modes.');
@@ -291,13 +306,8 @@ case 'javascript':
       alert('Failed exporting DOCX: ' + e.message);
     }
   });
-
-  // Initial setup
-  window.addEventListener('DOMContentLoaded', () => {
-    setThemeAndLogo(currentMode);
-    updatePreview(editor.getValue());
-  });
-
 </script>
+
+
 </body>
 </html>
