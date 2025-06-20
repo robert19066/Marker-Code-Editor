@@ -18,6 +18,8 @@
 - We know we have an problem with installing executables,due to the fact browslers say it is not commonly installed.
 - Please report the executables as SAFE
 
+Formerly Marker Site Editor
+
 ### **Your Next-Gen Code Editing Tool**  
 
 **Marker Code Builder** is a sleek, **VS Code-inspired web editor** with a stunning **glassmorphic macOS-style UI**,  and **multi-format export options**.  
