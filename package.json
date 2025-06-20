@@ -1,6 +1,6 @@
 {
   "name": "marker-site-builder",
-  "version": "0.0.2",
+  "version": "0.4.0",
   "description": "Next-gen Site Builder!",
   "main": "main.js",
   "author": {
