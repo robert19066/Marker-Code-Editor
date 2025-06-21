@@ -3,368 +3,350 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Marker Site Builder V5</title>
+<title>Multi-language IDE with Piston & CodeMirror</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.min.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/show-hint.css" />
+<!-- CodeMirror core -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.css" />
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.js"></script>
 
-<!-- Default CodeMirror themes -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/theme/dracula.min.css" />
+<!-- Themes -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/theme/dracula.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/theme/material.css" />
+
+<!-- Official CodeMirror modes -->
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/javascript/javascript.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/python/python.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/clike/clike.js"></script> <!-- C, C++, Java, C# -->
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/php/php.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/ruby/ruby.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/shell/shell.js"></script> <!-- bash -->
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/go/go.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/rust/rust.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/xml/xml.js"></script> <!-- XML/HTML fallback -->
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/lua/lua.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/perl/perl.js"></script>
+
+<!-- Community or unofficial modes -->
+<script src="https://cdn.jsdelivr.net/gh/jcward/codemirror-kotlin/mode/kotlin.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/akamud/codemirror-scala/mode/scala.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/terryyin/lua-mode-for-codemirror/lua.js"></script>
 
 <style>
-  /* Custom themes */
-  .cm-s-brown.CodeMirror { background: #f4ede0; color: #5a3e36; }
-  .cm-s-brown .CodeMirror-cursor { border-left: 1px solid #5a3e36; }
-  .cm-s-brown .CodeMirror-gutters { background: #e3d6cc; border-right: 1px solid #5a3e36; }
-
-  .cm-s-yellow.CodeMirror { background: #fff9db; color: #b58900; }
-  .cm-s-yellow .CodeMirror-cursor { border-left: 1px solid #b58900; }
-  .cm-s-yellow .CodeMirror-gutters { background: #fff3b0; border-right: 1px solid #b58900; }
-
-  .cm-s-red.CodeMirror { background: #ffeaea; color: #b22222; }
-  .cm-s-red .CodeMirror-cursor { border-left: 1px solid #b22222; }
-  .cm-s-red .CodeMirror-gutters { background: #ffcece; border-right: 1px solid #b22222; }
-
-  /* Body styling */
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
   body {
-    margin: 0; font-family: 'Fira Code', monospace;
-    background: linear-gradient(135deg, #141414 0%, #222 100%);
-    color: #e0e0e0; height: 100vh;
-    display: flex; flex-direction: column; align-items: center; overflow: hidden;
-  }
-
-  /* Toolbar styling */
-  #toolbar {
-    width: 90%; background: rgba(30,30,30,0.75);
-    backdrop-filter: blur(15px); padding: 1rem 1.5rem;
-    display: flex; gap: 1rem; align-items: center;
-    border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-    position: relative; z-index: 10;
-    transition: color 0.5s ease;
-  }
-
-  #logo {
-    height: 28px;
-    width: 28px;
-    margin-right: 0.75rem;
-    transition: filter 0.5s ease;
-  }
-
-  h1 {
     margin: 0;
-    font-size: 1.5rem;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #121212;
+    color: #eee;
+  }
+  header {
+    background: #1f1f1f;
+    padding: 12px 20px;
+    text-align: center;
     font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 1.2px;
+    user-select: none;
+    border-bottom: 2px solid #3f3f3f;
+  }
+  #container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+  #editor-container, #output-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #editor-container {
+    border-right: 2px solid #3f3f3f;
+  }
+  #output-container {
+    border-left: 2px solid #3f3f3f;
+    background: #1e1e1e;
+    color: #cfd8dc;
+  }
+  #controls {
+    padding: 10px 15px;
+    background: #2c2c2c;
     display: flex;
     align-items: center;
-    user-select: none;
-    transition: color 0.5s ease;
+    gap: 12px;
+    border-bottom: 2px solid #3f3f3f;
   }
-
-  select, button, a.download-link {
-    background: rgba(40,40,40,0.6);
-    backdrop-filter: blur(12px);
-    color: #a0c8ff; border: none; border-radius: 12px;
-    padding: 0.5rem 1rem; font-size: 1rem; cursor: pointer;
-    font-weight: 600; transition: all 0.3s ease;
+  select, button {
+    font-size: 1rem;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #444;
+    color: #eee;
+    cursor: pointer;
+    transition: background 0.25s;
   }
-  select:hover, button:hover, a.download-link:hover {
-    background: #2c60ff; color: #fff; transform: scale(1.06);
+  select:hover, button:hover {
+    background: #555;
   }
-
-  #editor-layout {
-    width: 90%; flex: 1; display: flex; gap: 12px; padding: 20px 0; overflow: hidden;
+  button:active {
+    background: #666;
+  }
+  #editor {
+    flex: 1;
+    height: 100%;
   }
   .CodeMirror {
-    width: 50%; height: 100%; font-size: 1.05rem;
-    border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    transition: background-color 0.5s ease, color 0.5s ease;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1.4;
   }
-  iframe, #js-output {
-    width: 50%; height: 100%; border-radius: 14px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    background: #fff; color: #000; padding: 12px; font-family: monospace;
-    overflow-y: auto; white-space: pre-wrap; border: none;
-    transition: background-color 0.5s ease, color 0.5s ease;
-  }
-  #js-output {
-    display: none;
+  #output {
+    flex: 1;
+    margin: 10px;
     background: #111;
-    color: #0f0;
+    color: #eee;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-y: auto;
+    font-family: 'Source Code Pro', monospace;
+    white-space: pre-wrap;
+    box-shadow: inset 0 0 10px #000;
+  }
+  #html-preview {
+    flex: 1;
+    margin: 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: white;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #container {
+      flex-direction: column;
+    }
+    #editor-container, #output-container {
+      height: 50vh;
+      border: none;
+      border-bottom: 2px solid #3f3f3f;
+    }
+    #output-container {
+      border-top: 2px solid #3f3f3f;
+    }
   }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/markdown/markdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/htmlmixed/htmlmixed.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/javascript/javascript.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/python/python.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/show-hint.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/html-hint.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/edit/closetag.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/edit/closebrackets.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/addon/hint/javascript-hint.js"></script>
-
-<script type="module" src="https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html-docx-js/dist/html-docx.min.js"></script>
-
 </head>
 <body>
-  <div id="toolbar">
-    <img id="logo" src="https://cdn-icons-png.flaticon.com/512/919/919832.png" alt="Markdown Logo" />
-    <h1 id="title">Marker Code Editor <strong><i>V5</i></strong></h1>
-    <select id="mode-toggle">
-      <option value="markdown">Markdown</option>
-      <option value="html">HTML</option>
-      <option value="javascript">JavaScript</option>
-      <option value="python">Python</option>
-    </select>
-    <a href="#" download="marked_preview.html" class="download-link" id="download-html-link">Download HTML</a>
-    <button id="download-docx-btn">Export DOCX</button>
-    <a href="#" download="script.js" class="download-link" id="download-js-link" style="display:none;">Download JS</a>
-    <!-- Add this inside the #toolbar div -->
-<button id="run-python-btn" style="display: none;">Run Python</button> <!-- NEW -->
 
+<header>Multi-language IDE with Piston API v1 & CodeMirror</header>
+
+<div id="container">
+  <div id="editor-container">
+    <div id="controls">
+      <select id="language-select" aria-label="Select Programming Language"></select>
+      <select id="theme-select" aria-label="Select Editor Theme">
+        <option value="default">Default</option>
+        <option value="dracula" selected>Dracula</option>
+        <option value="material">Material</option>
+      </select>
+      <button id="run-btn">Run</button>
+      <button id="export-btn">Export</button>
+    </div>
+    <textarea id="editor" aria-label="Code Editor"></textarea>
   </div>
 
-  <div id="editor-layout">
-    <textarea id="temp-result"></textarea>
-    <iframe id="preview" sandbox="allow-same-origin"></iframe>
-    <pre id="js-output"></pre>
+  <div id="output-container">
+    <h3 style="margin:10px 15px 5px;">Output</h3>
+    <pre id="output" aria-live="polite" aria-atomic="true"></pre>
+    <iframe id="html-preview" style="display:none;" sandbox="allow-scripts allow-same-origin"></iframe>
   </div>
+</div>
 
-<script type="module">
-  import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+<script>
+  const languages = [
+    { name: "JavaScript", cmMode: "javascript", pistonId: "javascript", extension: "js" },
+    { name: "Python", cmMode: "python", pistonId: "python3", extension: "py" },
+    { name: "C++", cmMode: "clike", pistonId: "cpp", extension: "cpp" },
+    { name: "Java", cmMode: "clike", pistonId: "java", extension: "java" },
+    { name: "PHP", cmMode: "php", pistonId: "php", extension: "php" },
+    { name: "Ruby", cmMode: "ruby", pistonId: "ruby", extension: "rb" },
+    { name: "Go", cmMode: "go", pistonId: "go", extension: "go" },
+    { name: "Rust", cmMode: "rust", pistonId: "rust", extension: "rs" },
+    { name: "C#", cmMode: "clike", pistonId: "csharp", extension: "cs" },
+    { name: "Swift", cmMode: null, pistonId: "swift", extension: "swift" },
+    { name: "Kotlin", cmMode: "kotlin", pistonId: "kotlin", extension: "kt" },
+    { name: "Scala", cmMode: "scala", pistonId: "scala", extension: "scala" },
+    { name: "Perl", cmMode: "perl", pistonId: "perl", extension: "pl" },
+    { name: "Bash", cmMode: "shell", pistonId: "bash", extension: "sh" },
+    { name: "TypeScript", cmMode: "javascript", pistonId: "typescript", extension: "ts" },
+    { name: "Dart", cmMode: null, pistonId: "dart", extension: "dart" },
+    { name: "Lua", cmMode: "lua", pistonId: "lua", extension: "lua" },
+  ];
 
-  const rawTextarea = document.getElementById('temp-result');
-  const iframe = document.getElementById('preview');
-  const jsOutput = document.getElementById('js-output');
+  const langSelect = document.getElementById("language-select");
+  const themeSelect = document.getElementById("theme-select");
+  const outputEl = document.getElementById("output");
+  const htmlPreview = document.getElementById("html-preview");
 
-  const downloadHtmlLink = document.getElementById('download-html-link');
-  const downloadDocxBtn = document.getElementById('download-docx-btn');
-  const downloadJsLink = document.getElementById('download-js-link');
-  const modeToggle = document.getElementById('mode-toggle');
+  // Populate language dropdown
+  languages.forEach(lang => {
+    const option = document.createElement("option");
+    option.value = lang.pistonId;
+    option.textContent = lang.name;
+    langSelect.appendChild(option);
+  });
 
-  const logo = document.getElementById('logo');
-  const title = document.getElementById('title');
-  const toolbar = document.getElementById('toolbar');
-
-  let currentMode = 'markdown';
-  let autocompleteEnabled = true; // Only used for JavaScript mode
-
-  const editor = CodeMirror.fromTextArea(rawTextarea, {
+  // Initialize CodeMirror
+  const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
     lineNumbers: true,
-    mode: "markdown",
-    theme: "brown",
-    lineWrapping: true,
-    autoCloseBrackets: true,
-    autoCloseTags: true,
-    extraKeys: {
-      "Ctrl-Space": "autocomplete"
-    }
+    mode: "javascript",
+    theme: "dracula",
+    tabSize: 2,
+    indentUnit: 2,
+    autofocus: true,
+    viewportMargin: Infinity
   });
 
-  editor.on("keyup", (cm, event) => {
-    if (
-      (currentMode === 'javascript' || currentMode === 'python') &&
-      autocompleteEnabled &&
-      !cm.state.completionActive &&
-      event.keyCode !== 13 &&
-      event.keyCode !== 27
-    ) {
-      CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
-    }
-  });
+  // Helper: get language by pistonId
+  function getLangById(id) {
+    return languages.find(l => l.pistonId === id);
+  }
 
-  editor.on("change", () => updatePreview(editor.getValue()));
-
-  async function updatePreview(code) {
-    if (currentMode === 'javascript') {
-      iframe.style.display = 'none';
-      jsOutput.style.display = 'block';
-      runJS(code);
-    } else if (currentMode === 'python') {
-      iframe.style.display = 'none';
-      jsOutput.style.display = 'block';
-      await runPython(code);
-    } else {
-      iframe.style.display = 'block';
-      jsOutput.style.display = 'none';
-
-      const html = currentMode === 'markdown' ? marked.parse(code) : code;
-      const previewHTML = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head><meta charset="UTF-8">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"></head>
-        <body><div id="output">${html}</div></body>
-        </html>`;
-      iframe.srcdoc = previewHTML;
-
-      const blob = new Blob([previewHTML], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      downloadHtmlLink.href = url;
+  // Starter code snippets
+  function getStarterCode(pistonId) {
+    switch(pistonId) {
+      case "python3": return "print('Hello, World!')";
+      case "javascript": return "console.log('Hello, World!');";
+      case "cpp": return "#include <iostream>\nint main() {\n  std::cout << \"Hello, World!\" << std::endl;\n  return 0;\n}";
+      case "java": return "public class Main {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, World!\");\n  }\n}";
+      case "php": return "<?php echo 'Hello, World!'; ?>";
+      case "ruby": return "puts 'Hello, World!'";
+      case "go": return "package main\nimport \"fmt\"\nfunc main() {\n  fmt.Println(\"Hello, World!\")\n}";
+      case "rust": return "fn main() {\n  println!(\"Hello, World!\");\n}";
+      case "csharp": return "using System;\nclass Program {\n  static void Main() {\n    Console.WriteLine(\"Hello, World!\");\n  }\n}";
+      case "kotlin": return "fun main() {\n  println(\"Hello, World!\")\n}";
+      case "scala": return "object Main extends App {\n  println(\"Hello, World!\")\n}";
+      case "perl": return "print \"Hello, World!\\n\";";
+      case "bash": return "echo \"Hello, World!\"";
+      case "typescript": return "console.log('Hello, World!');";
+      case "dart": return "void main() {\n  print('Hello, World!');\n}";
+      case "lua": return "print('Hello, World!')";
+      case "swift": return "print(\"Hello, World!\")";
+      default: return "";
     }
   }
 
-  function runJS(code) {
-    jsOutput.textContent = '';
-    const originalConsoleLog = console.log;
+  // Update editor mode and starter code when language changes
+  langSelect.addEventListener("change", () => {
+    const lang = getLangById(langSelect.value);
+    const mode = lang?.cmMode || null;
+    editor.setOption("mode", mode);
+    editor.setValue(getStarterCode(langSelect.value));
+    // Hide iframe preview and show output by default
+    htmlPreview.style.display = "none";
+    outputEl.style.display = "block";
+    outputEl.textContent = "";
+  });
 
-    console.log = function (...args) {
-      jsOutput.textContent += args.join(' ') + '\n';
-      originalConsoleLog.apply(console, args);
+  // Initialize with JavaScript selected
+  langSelect.value = "javascript";
+  langSelect.dispatchEvent(new Event("change"));
+
+  // Theme switcher
+  themeSelect.addEventListener("change", () => {
+    editor.setOption("theme", themeSelect.value);
+  });
+
+  // Run code handler
+  document.getElementById("run-btn").addEventListener("click", async () => {
+  const lang = getLangById(langSelect.value);
+  if (!lang) {
+    outputEl.textContent = "[ERROR]Unsupported language.";
+    return;
+  }
+  outputEl.textContent = "Compiling...";
+
+  try {
+    // Fetch runtimes to get version
+    const runtimesRes = await fetch("https://emkc.org/api/v2/piston/runtimes");
+    if (!runtimesRes.ok) throw new Error("[ERROR]Failed to fetch runtimes");
+
+    const runtimes = await runtimesRes.json();
+
+    // Find runtime for selected language
+    const runtime = runtimes.find(r => r.language === lang.pistonId);
+    if (!runtime || !runtime.version) {
+      outputEl.textContent = "[ERROR]Runtime version not found for this language.";
+      return;
+    }
+
+    // Prepare payload
+    const payload = {
+      language: lang.pistonId,
+      version: runtime.version,
+      files: [
+        {
+          name: `code.${lang.extension}`,
+          content: editor.getValue()
+        }
+      ]
     };
 
-    try {
-      eval(code);
-    } catch (e) {
-      jsOutput.textContent += 'Error: ' + e.message + '\n';
+    // Call Piston execute API
+    const res = await fetch("https://emkc.org/api/v2/piston/execute", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      outputEl.textContent = `[ERROR] ${res.status} ${res.statusText}\n${err}`;
+      return;
     }
 
-    console.log = originalConsoleLog;
+    const data = await res.json();
+  if (data.run) {
+    outputEl.textContent = "";
+    if (data.run.stdout) outputEl.textContent += data.run.stdout;
+    if (data.run.stderr) outputEl.textContent += "\n[stderr]\n" + data.run.stderr;
+    // Only add run.output if it's meaningfully different and not duplicate:
+    if (data.run.output && data.run.output !== data.run.stdout) {
+      outputEl.textContent += "\n[output]\n" + data.run.output;
+    }
+  } else {
+    outputEl.textContent = JSON.stringify(data, null, 2);
   }
-
-  async function runPython(code) {
-    jsOutput.textContent = 'Running Python code...\n';
-
-    try {
-      const response = await fetch('https://emkc.org/api/v1/piston/execute', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          language: 'python',
-          source: code,
-        })
-      });
-
-      if (!response.ok) {
-        jsOutput.textContent = `Error: ${response.statusText} (status: ${response.status})`;
-        return;
-      }
-
-      const data = await response.json();
-
-      const stdout = data.stdout || data.output || '';
-      const stderr = data.stderr || '';
-
-      jsOutput.textContent = '';
-      if (stdout) jsOutput.textContent += stdout;
-      if (stderr) jsOutput.textContent += stderr;
-
-      if (!stdout && !stderr) {
-        jsOutput.textContent = 'No output from script (empty stdout and stderr).';
-      }
-
-    } catch (error) {
-      jsOutput.textContent = 'Error running Python code: ' + error.message;
-    }
   }
-
-  function setThemeAndLogo(mode) {
-    let theme, logoSrc, color;
-    switch (mode) {
-      case 'markdown':
-        theme = 'brown';
-        logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968318.png';
-        color = '#5a3e36';
-        break;
-      case 'html':
-        theme = 'red';
-        logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968267.png';
-        color = '#b22222';
-        break;
-      case 'javascript':
-        theme = 'yellow';
-        logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png';
-        color = '#b58900';
-        break;
-      case 'python':
-        theme = 'dracula';
-        logoSrc = 'https://cdn-icons-png.flaticon.com/512/919/919852.png';
-        color = '#3572A5';
-        break;
-      default:
-        theme = 'brown';
-        logoSrc = 'https://cdn-icons-png.flaticon.com/512/5968/5968318.png';
-        color = '#5a3e36';
-    }
-
-    editor.setOption('theme', theme);
-    logo.src = logoSrc;
-    title.style.color = color;
-    toolbar.style.color = color;
+  catch (err) {
+    outputEl.textContent = "Error: " + err.message;
   }
+});
 
-  modeToggle.addEventListener("change", () => {
-    currentMode = modeToggle.value;
 
-    editor.setOption("mode",
-      currentMode === "markdown" ? "markdown" :
-      currentMode === "html" ? "htmlmixed" :
-      currentMode === "javascript" ? "javascript" :
-      currentMode === "python" ? "python" : "markdown"
-    );
-
-    if (currentMode === 'javascript' || currentMode === 'python') {
-      downloadJsLink.style.display = 'inline-block';
-      downloadHtmlLink.style.display = 'none';
-      downloadDocxBtn.style.display = 'none';
-
-      if (currentMode === 'python') {
-        downloadJsLink.textContent = 'Download PY';
-      } else {
-        downloadJsLink.textContent = 'Download JS';
-      }
-    } else {
-      downloadJsLink.style.display = 'none';
-      downloadHtmlLink.style.display = 'inline-block';
-      downloadDocxBtn.style.display = 'inline-block';
-    }
-
-    setThemeAndLogo(currentMode);
-    updatePreview(editor.getValue());
-  });
-
-  // Initial load
-  setThemeAndLogo(currentMode);
-  updatePreview(editor.getValue());
-
-  // DOCX Export button
-  downloadDocxBtn.addEventListener('click', () => {
-    let content = '';
-    if (currentMode === 'markdown') {
-      content = marked.parse(editor.getValue());
-    } else if (currentMode === 'html') {
-      content = editor.getValue();
-    } else {
-      content = `<pre>${editor.getValue()}</pre>`;
-    }
-
-    const converted = window.htmlDocx.asBlob(content, { orientation: 'portrait', margins: { top: 720 } });
-    const url = URL.createObjectURL(converted);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'export.docx';
+  // Export button handler
+  document.getElementById("export-btn").addEventListener("click", () => {
+    const lang = getLangById(langSelect.value);
+    const filename = "code." + (lang ? lang.extension : "txt");
+    const blob = new Blob([editor.getValue()], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
     a.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(a.href);
   });
-
-  // Download JS/PY file link
-  downloadJsLink.addEventListener('click', () => {
-    const code = editor.getValue();
-    let filename = currentMode === 'python' ? 'script.py' : 'script.js';
-    const mimeType = currentMode === 'python' ? 'text/x-python' : 'application/javascript';
-
-    const blob = new Blob([code], { type: mimeType });
-    downloadJsLink.href = URL.createObjectURL(blob);
-    downloadJsLink.download = filename;
-  });
-
 </script>
 
 </body>

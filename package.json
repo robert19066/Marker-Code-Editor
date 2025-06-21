@@ -25,8 +25,9 @@
   "build": {
   "appId": "com.marker.sitebuilder",
   "productName": "Marker Site Builder",
+  "icon": "images/icon.ico",
   "win": { 
-    "icon": "images/icon.ico",
+    
     "target": ["nsis", "portable"]
   },
   "nsis": {

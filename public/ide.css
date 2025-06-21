@@ -1,0 +1,11 @@
+/* ide.css */
+body { margin: 0; font-family: 'Fira Code', monospace; background: #1e1e1e; color: #ccc; display: flex; flex-direction: column; height: 100vh; }
+#toolbar { background: #252526; padding: .75rem 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,.5); z-index:1 }
+#mode-toggle, button, .download-link { background: #3c3c3c; color: #dcdcdc; border: none; border-radius: 6px; padding: .4rem .8rem; font-size: .9rem; cursor: pointer; }
+#mode-toggle:hover, button:hover, .download-link:hover { background: #007acc; color: #fff }
+#editor-layout { flex:1; display:flex; flex-direction:row; overflow:hidden }
+.CodeMirror { flex:1; height:100%; border-right:1px solid #444; }
+iframe, #js-output { flex:1; height:100%; background:#1e1e1e; color:#0f0; padding:10px; border:none; font-family:monospace; overflow-y: auto }
+#js-output { white-space: pre-wrap }
+#status-bar { height: 24px; background:#333; color:#aaa; font-size:.8rem; padding:4px 12px; display:flex; align-items:center }
+#toolbar img { height: 20px; width: 20px; margin-right: 6px; }
