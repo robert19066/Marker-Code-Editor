@@ -6,7 +6,7 @@
   "MD033": false,
   "MD041": false
 } -->
-# 🚀 Marker Code Editor
+# 🚀 Marker IDE
 ![Status](https://img.shields.io/badge/Repository%20Status-Maintained-brightgreen) 
 ![Forks](https://img.shields.io/badge/Forks-Open-blue) 
 ![Virus Free](https://img.shields.io/badge/Virus--free-Yes-success) 
