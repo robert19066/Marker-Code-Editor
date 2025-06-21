@@ -1,6 +1,6 @@
 {
   "name": "marker-site-builder",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Next-gen Site Builder!",
   "main": "main.js",
   "author": {
@@ -25,9 +25,9 @@
   "build": {
   "appId": "com.marker.sitebuilder",
   "productName": "Marker Site Builder",
-  "icon": "images/icon.ico",
+  
   "win": { 
-    
+    "icon": "./images/Marker.ico",
     "target": ["nsis", "portable"]
   },
   "nsis": {
@@ -37,7 +37,7 @@
     "artifactName": "MarkerEditor_Windows_V${version}_PORTABLE.exe"
   },
   "linux": {
-    "icon": "images/icon.ico",
+    "icon": "./images/Marker.ico",
     "target": ["AppImage", "deb"],
     "category": "Development"
     
