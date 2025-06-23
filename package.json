@@ -25,6 +25,7 @@
     "electron-builder": "^24.6.0"
   },
   "build": {
+    "asar": true,
     "appId": "com.marker.sitebuilder",
     "productName": "Marker Site Builder",
     "win": {
@@ -41,7 +42,7 @@
       "artifactName": "MarkerEditor_Windows_V${version}_PORTABLE.exe"
     },
     "linux": {
-      "icon": "./images/Marker.ico",
+      "icon": "./images/Marker_linux.jpg",
       "target": [
         "AppImage",
         "deb"
