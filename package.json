@@ -42,7 +42,7 @@
       "artifactName": "MarkerEditor_Windows_V${version}_PORTABLE.exe"
     },
     "linux": {
-      "icon": "./images/Marker_linux.jpg",
+      "icon": "./images/Marker_linux.png",
       "target": [
         "AppImage",
         "deb"
