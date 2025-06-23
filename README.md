@@ -11,7 +11,7 @@
 ![Forks](https://img.shields.io/badge/Forks-Open-blue) 
 ![Virus Free](https://img.shields.io/badge/Virus--free-Yes-success) 
 ![Built With](https://img.shields.io/badge/Built%20with-JavaScript-yellow) 
-![Static Badge](https://img.shields.io/badge/V5-cyan?style=flat&label=Latest%20Version)
+![Static Badge](https://img.shields.io/badge/V7-cyan?style=flat&label=Latest%20Version)
 
  
 
