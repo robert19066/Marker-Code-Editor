@@ -24,7 +24,7 @@
 - 🛡️ 100% virus-free — scan it yourself!
 - 🖥️ Windows executables may trigger browser warnings (not commonly installed). Please report them as **SAFE**.
 - 💡 Open for forks, contributions, and promotion!
-- ⏳ Development takes time — thanks for your patience.
+- ⏳ Development takes time — thanks for your patience.(62 commits,you can see,development is hell XD)
 - ⚠️ Built on Windows — **no macOS support (yet)**.
 
 ---
