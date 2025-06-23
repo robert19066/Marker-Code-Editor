@@ -1,353 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Marker IDE V6</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marker IDE V7 - Full Featured</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/theme/dracula.css" />
+  <link rel="stylesheet" href="./public/ide.css" />
 
-<!-- CodeMirror core -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.css" />
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.js"></script>
+  <!-- CodeMirror core -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
 
-<!-- Themes -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/theme/dracula.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/theme/material.css" />
+<!-- CodeMirror modes as needed -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/markdown/markdown.min.js"></script>
+<!-- add more modes if needed -->
 
-<!-- Official CodeMirror modes -->
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/javascript/javascript.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/python/python.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/clike/clike.js"></script> <!-- C, C++, Java, C# -->
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/php/php.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/ruby/ruby.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/shell/shell.js"></script> <!-- bash -->
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/go/go.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/rust/rust.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/xml/xml.js"></script> <!-- XML/HTML fallback -->
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/markdown/markdown.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/lua/lua.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/perl/perl.js"></script>
+<!-- CodeMirror themes -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css" />
 
-<!-- Community or unofficial modes -->
-<script src="https://cdn.jsdelivr.net/gh/jcward/codemirror-kotlin/mode/kotlin.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/akamud/codemirror-scala/mode/scala.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/terryyin/lua-mode-for-codemirror/lua.js"></script>
-
-<style>
-  /* Reset and base */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: #121212;
-    color: #eee;
-  }
-  header {
-    background: #1f1f1f;
-    padding: 12px 20px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.5rem;
-    letter-spacing: 1.2px;
-    user-select: none;
-    border-bottom: 2px solid #3f3f3f;
-  }
-  #container {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-  }
-  #editor-container, #output-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  #editor-container {
-    border-right: 2px solid #3f3f3f;
-  }
-  #output-container {
-    border-left: 2px solid #3f3f3f;
-    background: #1e1e1e;
-    color: #cfd8dc;
-  }
-  #controls {
-    padding: 10px 15px;
-    background: #2c2c2c;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 2px solid #3f3f3f;
-  }
-  select, button {
-    font-size: 1rem;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    background: #444;
-    color: #eee;
-    cursor: pointer;
-    transition: background 0.25s;
-  }
-  select:hover, button:hover {
-    background: #555;
-  }
-  button:active {
-    background: #666;
-  }
-  #editor {
-    flex: 1;
-    height: 100%;
-  }
-  .CodeMirror {
-    height: 100%;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-  #output {
-    flex: 1;
-    margin: 10px;
-    background: #111;
-    color: #eee;
-    padding: 15px;
-    border-radius: 6px;
-    overflow-y: auto;
-    font-family: 'Source Code Pro', monospace;
-    white-space: pre-wrap;
-    box-shadow: inset 0 0 10px #000;
-  }
-  #html-preview {
-    flex: 1;
-    margin: 10px;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background: white;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    #container {
-      flex-direction: column;
-    }
-    #editor-container, #output-container {
-      height: 50vh;
-      border: none;
-      border-bottom: 2px solid #3f3f3f;
-    }
-    #output-container {
-      border-top: 2px solid #3f3f3f;
-    }
-  }
-</style>
+<!-- Marked for Markdown parsing -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 </head>
 <body>
 
-<header>Marker IDE V6</header>
+<header>Marker IDE V7 - Full Featured</header>
 
 <div id="container">
-  <div id="editor-container">
+  <section id="editor-container">
     <div id="controls">
-      <select id="language-select" aria-label="Select Programming Language"></select>
-      <select id="theme-select" aria-label="Select Editor Theme">
+      <select id="language-select" title="Select Language"></select>
+      <select id="theme-select" title="Select Theme">
         <option value="default">Default</option>
         <option value="dracula" selected>Dracula</option>
         <option value="material">Material</option>
       </select>
-      <button id="run-btn">Run</button>
-      <button id="export-btn">Export</button>
+      
+      <button id="run-btn" title="Run Code">Run</button>
+      <button id="lint-btn" title="Lint Code">Lint</button>
+      <button id="export-btn" title="Export Code">Export</button>
+      <button id="copy-code-btn" title="Copy Code">Copy Code</button>
+      <button id="copy-output-btn" title="Copy Output">Copy Output</button>
     </div>
-    <textarea id="editor" aria-label="Code Editor"></textarea>
-  </div>
+    <textarea id="editor"></textarea>
+  </section>
 
-  <div id="output-container">
-    <h3 style="margin:10px 15px 5px;">Output</h3>
-    <pre id="output" aria-live="polite" aria-atomic="true"></pre>
+  <section id="output-container">
+    <pre id="output">//console output</pre>
     <iframe id="html-preview" style="display:none;" sandbox="allow-scripts allow-same-origin"></iframe>
-  </div>
+  </section>
 </div>
 
-<script>
-  const languages = [
-    { name: "JavaScript", cmMode: "javascript", pistonId: "javascript", extension: "js" },
-    { name: "Python", cmMode: "python", pistonId: "python3", extension: "py" },
-    { name: "C++", cmMode: "clike", pistonId: "cpp", extension: "cpp" },
-    { name: "Java", cmMode: "clike", pistonId: "java", extension: "java" },
-    { name: "PHP", cmMode: "php", pistonId: "php", extension: "php" },
-    { name: "Ruby", cmMode: "ruby", pistonId: "ruby", extension: "rb" },
-    { name: "Go", cmMode: "go", pistonId: "go", extension: "go" },
-    { name: "Rust", cmMode: "rust", pistonId: "rust", extension: "rs" },
-    { name: "C#", cmMode: "clike", pistonId: "csharp", extension: "cs" },
-    { name: "Swift", cmMode: null, pistonId: "swift", extension: "swift" },
-    { name: "Kotlin", cmMode: "kotlin", pistonId: "kotlin", extension: "kt" },
-    { name: "Scala", cmMode: "scala", pistonId: "scala", extension: "scala" },
-    { name: "Perl", cmMode: "perl", pistonId: "perl", extension: "pl" },
-    { name: "Bash", cmMode: "shell", pistonId: "bash", extension: "sh" },
-    { name: "TypeScript", cmMode: "javascript", pistonId: "typescript", extension: "ts" },
-    { name: "Dart", cmMode: null, pistonId: "dart", extension: "dart" },
-    { name: "Lua", cmMode: "lua", pistonId: "lua", extension: "lua" },
-  ];
+<button id="toggle-ai-btn">AI Chat</button>
 
-  const langSelect = document.getElementById("language-select");
-  const themeSelect = document.getElementById("theme-select");
-  const outputEl = document.getElementById("output");
-  const htmlPreview = document.getElementById("html-preview");
+<section id="ai-container">
+  <div id="ai-header">AI Conversation</div>
+  <div id="chat-messages"></div>
+  <div id="chat-input-container">
+    <input type="text" id="chat-input" placeholder="Ask something..." autocomplete="off" />
+    <button id="chat-send-btn">Send</button>
+  </div>
+</section>
 
-  // Populate language dropdown
-  languages.forEach(lang => {
-    const option = document.createElement("option");
-    option.value = lang.pistonId;
-    option.textContent = lang.name;
-    langSelect.appendChild(option);
-  });
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/javascript/javascript.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/python/python.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/php/php.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/shell/shell.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.15/mode/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  // Initialize CodeMirror
-  const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
-    lineNumbers: true,
-    mode: "javascript",
-    theme: "dracula",
-    tabSize: 2,
-    indentUnit: 2,
-    autofocus: true,
-    viewportMargin: Infinity
-  });
-
-  // Helper: get language by pistonId
-  function getLangById(id) {
-    return languages.find(l => l.pistonId === id);
-  }
-
-  // Starter code snippets
-  function getStarterCode(pistonId) {
-    switch(pistonId) {
-      case "python3": return "print('Hello, World!')";
-      case "javascript": return "console.log('Hello, World!');";
-      case "cpp": return "#include <iostream>\nint main() {\n  std::cout << \"Hello, World!\" << std::endl;\n  return 0;\n}";
-      case "java": return "public class Main {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, World!\");\n  }\n}";
-      case "php": return "<?php echo 'Hello, World!'; ?>";
-      case "ruby": return "puts 'Hello, World!'";
-      case "go": return "package main\nimport \"fmt\"\nfunc main() {\n  fmt.Println(\"Hello, World!\")\n}";
-      case "rust": return "fn main() {\n  println!(\"Hello, World!\");\n}";
-      case "csharp": return "using System;\nclass Program {\n  static void Main() {\n    Console.WriteLine(\"Hello, World!\");\n  }\n}";
-      case "kotlin": return "fun main() {\n  println(\"Hello, World!\")\n}";
-      case "scala": return "object Main extends App {\n  println(\"Hello, World!\")\n}";
-      case "perl": return "print \"Hello, World!\\n\";";
-      case "bash": return "echo \"Hello, World!\"";
-      case "typescript": return "console.log('Hello, World!');";
-      case "dart": return "void main() {\n  print('Hello, World!');\n}";
-      case "lua": return "print('Hello, World!')";
-      case "swift": return "print(\"Hello, World!\")";
-      default: return "";
-    }
-  }
-
-  // Update editor mode and starter code when language changes
-  langSelect.addEventListener("change", () => {
-    const lang = getLangById(langSelect.value);
-    const mode = lang?.cmMode || null;
-    editor.setOption("mode", mode);
-    editor.setValue(getStarterCode(langSelect.value));
-    // Hide iframe preview and show output by default
-    htmlPreview.style.display = "none";
-    outputEl.style.display = "block";
-    outputEl.textContent = "";
-  });
-
-  // Initialize with JavaScript selected
-  langSelect.value = "javascript";
-  langSelect.dispatchEvent(new Event("change"));
-
-  // Theme switcher
-  themeSelect.addEventListener("change", () => {
-    editor.setOption("theme", themeSelect.value);
-  });
-
-  // Run code handler
-  document.getElementById("run-btn").addEventListener("click", async () => {
-  const lang = getLangById(langSelect.value);
-  if (!lang) {
-    outputEl.textContent = "[ERROR]Unsupported language.";
-    return;
-  }
-  outputEl.textContent = "Compiling...";
-
-  try {
-    // Fetch runtimes to get version
-    const runtimesRes = await fetch("https://emkc.org/api/v2/piston/runtimes");
-    if (!runtimesRes.ok) throw new Error("[ERROR]Failed to fetch runtimes");
-
-    const runtimes = await runtimesRes.json();
-
-    // Find runtime for selected language
-    const runtime = runtimes.find(r => r.language === lang.pistonId);
-    if (!runtime || !runtime.version) {
-      outputEl.textContent = "[ERROR]Runtime version not found for this language.";
-      return;
-    }
-
-    // Prepare payload
-    const payload = {
-      language: lang.pistonId,
-      version: runtime.version,
-      files: [
-        {
-          name: `code.${lang.extension}`,
-          content: editor.getValue()
-        }
-      ]
-    };
-
-    // Call Piston execute API
-    const res = await fetch("https://emkc.org/api/v2/piston/execute", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    if (!res.ok) {
-      const err = await res.text();
-      outputEl.textContent = `[ERROR] ${res.status} ${res.statusText}\n${err}`;
-      return;
-    }
-
-    const data = await res.json();
-  if (data.run) {
-    outputEl.textContent = "";
-    if (data.run.stdout) outputEl.textContent += data.run.stdout;
-    if (data.run.stderr) outputEl.textContent += "\n[stderr]\n" + data.run.stderr;
-    // Only add run.output if it's meaningfully different and not duplicate:
-    if (data.run.output && data.run.output !== data.run.stdout) {
-      outputEl.textContent += "\n[output]\n" + data.run.output;
-    }
-  } else {
-    outputEl.textContent = JSON.stringify(data, null, 2);
-  }
-  }
-  catch (err) {
-    outputEl.textContent = "Error: " + err.message;
-  }
-});
-
-
-  // Export button handler
-  document.getElementById("export-btn").addEventListener("click", () => {
-    const lang = getLangById(langSelect.value);
-    const filename = "code." + (lang ? lang.extension : "txt");
-    const blob = new Blob([editor.getValue()], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  });
-</script>
+<script src="./src/index.js" type="module"></script>
 
 </body>
 </html>

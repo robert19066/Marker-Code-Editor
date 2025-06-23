@@ -1,11 +1,133 @@
-/* ide.css */
-body { margin: 0; font-family: 'Fira Code', monospace; background: #1e1e1e; color: #ccc; display: flex; flex-direction: column; height: 100vh; }
-#toolbar { background: #252526; padding: .75rem 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,.5); z-index:1 }
-#mode-toggle, button, .download-link { background: #3c3c3c; color: #dcdcdc; border: none; border-radius: 6px; padding: .4rem .8rem; font-size: .9rem; cursor: pointer; }
-#mode-toggle:hover, button:hover, .download-link:hover { background: #007acc; color: #fff }
-#editor-layout { flex:1; display:flex; flex-direction:row; overflow:hidden }
-.CodeMirror { flex:1; height:100%; border-right:1px solid #444; }
-iframe, #js-output { flex:1; height:100%; background:#1e1e1e; color:#0f0; padding:10px; border:none; font-family:monospace; overflow-y: auto }
-#js-output { white-space: pre-wrap }
-#status-bar { height: 24px; background:#333; color:#aaa; font-size:.8rem; padding:4px 12px; display:flex; align-items:center }
-#toolbar img { height: 20px; width: 20px; margin-right: 6px; }
+/* Basic reset & body */
+body, html {
+  margin: 0; height: 100%; font-family: 'Source Code Pro', monospace;
+  background: #222; color: #eee;
+  display: flex; flex-direction: column;
+}
+
+header {
+  background: #111; padding: 1rem; font-weight: 600; font-size: 1.3rem;
+  user-select: none;
+}
+
+#container {
+  flex: 1; display: flex; height: calc(100% - 50px); /* header height */
+  gap: 8px;
+}
+
+#editor-container, #output-container {
+  flex: 1; display: flex; flex-direction: column; background: #2a2a2a; border-radius: 6px;
+}
+
+#controls {
+  display: flex; gap: 8px; padding: 8px; background: #1a1a1a; border-bottom: 1px solid #444;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+select, button, input[type=range] {
+  background: #333; border: none; color: #eee; padding: 4px 8px; border-radius: 4px;
+  font-family: 'Source Code Pro', monospace;
+  cursor: pointer;
+}
+
+input[type=range] {
+  width: 100px;
+}
+
+#editor {
+  flex: 1; background: transparent;
+}
+
+/* CodeMirror styles override */
+.CodeMirror {
+  height: 100%;
+  font-size: 14px;
+  background: #282a36;
+  color: #f8f8f2;
+}
+
+#output {
+  background-color: #000000;      /* Black background */
+  color: #00ff00;                 /* Classic green terminal text */
+  font-family: 'Courier New', Courier, monospace; /* Monospace font */
+  padding: 1em;
+  border-radius: 5px;
+  min-height: 600px;
+  overflow-y: auto;
+  white-space: pre-wrap;          /* Preserve whitespace & wrap lines */
+  box-shadow: inset 0 0 10px #00ff00aa;
+  /* Optional: blinking cursor */
+  caret-color: #00ff00;
+}
+
+/* Optional blinking cursor effect for the last line */
+#output::after {
+  content: '█';
+  animation: blink 1s step-start 0s infinite;
+  color: #00ff00;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+#html-preview {
+  flex: 1; border: none; background: #fff;
+}
+
+#ai-container {
+  position: fixed; bottom: 16px; right: 16px; width: 320px; max-height: 480px;
+  background: #333; border-radius: 10px; box-shadow: 0 0 20px #0008;
+  display: none; flex-direction: column;
+  overflow: hidden;
+  color: #eee;
+}
+
+#ai-header {
+  background: #222; padding: 8px; font-weight: 700; user-select: none;
+}
+
+#chat-messages {
+  flex: 1; padding: 8px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.chat-message {
+  max-width: 80%; padding: 8px 12px; border-radius: 20px; font-size: 14px;
+  word-break: break-word;
+}
+
+.chat-message.ai {
+  background: #44475a;
+  align-self: flex-start;
+}
+
+.chat-message.user {
+  background: #50fa7b;
+  color: #222;
+  align-self: flex-end;
+}
+
+#chat-input-container {
+  display: flex; gap: 6px; padding: 8px; background: #222;
+}
+
+#chat-input {
+  flex: 1; padding: 6px 10px; border-radius: 6px; border: none;
+  font-family: 'Source Code Pro', monospace;
+}
+
+#toggle-ai-btn {
+  position: fixed; bottom: 16px; right: 360px; background: #50fa7b; border: none;
+  padding: 10px 16px; border-radius: 50px; font-weight: 700; color: #222;
+  cursor: pointer; box-shadow: 0 0 8px #50fa7b;
+}
+
+/* Copy buttons */
+.copy-btn {
+  margin-left: auto; cursor: pointer; background: #444; color: #eee; border-radius: 4px;
+  padding: 2px 6px; font-size: 12px;
+}
