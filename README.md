@@ -38,11 +38,9 @@ Built for creators who want a smooth, intuitive, and powerful editing experience
 
 
 ## 🌟 **Why Choose Marker?**  
-✅ **Live preview** with instant rendering  
+✅ **Live preview/shell** with instant rendering  
 ✅ **Glassmorphic macOS-inspired UI**—modern, elegant, and silky-smooth  
-✅ **Python,MD,JS and HTML support + flexibility**  
-✅ **Dark/Light mode toggle saved in local storage**  
-✅ **Multi-format export**—save as **HTML** **DOCX**, **JS** or **Python**
+✅ **Over 30+ langauges**
 ---
 
 ## 🛠️ **Installation Guide**  
