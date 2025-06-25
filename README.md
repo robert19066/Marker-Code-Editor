@@ -15,6 +15,9 @@
 ![Built With](https://img.shields.io/badge/Built%20with-JavaScript-yellow)
 ![Latest Version](https://img.shields.io/badge/V7-cyan?style=flat&label=Latest%20Version)
 
+# Important message:
+
+yeah this is dead 🤯
 ---
 
 > **Formerly Marker Site Editor**
