@@ -9,7 +9,7 @@
 
 # ✨🚀 Marker IDE — The Next-Gen Code Playground
 
-![Status](https://img.shields.io/badge/Repository%20Status-Discontinued😿-red)
+![Status](https://img.shields.io/badge/Repository%20Status-Halted-orange)
 ![Forks](https://img.shields.io/badge/Forks-Open-blue)
 ![Virus Free](https://img.shields.io/badge/Virus--free-Yes-success)
 ![Built With](https://img.shields.io/badge/Built%20with-JavaScript-yellow)
@@ -17,7 +17,7 @@
 
 # Important message:
 
-yeah this is dead 🤯
+yeah this NOT is dead 🤯
 ---
 
 > **Formerly Marker Site Editor**
