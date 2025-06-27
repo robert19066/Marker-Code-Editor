@@ -28,7 +28,7 @@
   "devDependencies": {
     "electron": "^27.1.0",
     "electron-builder": "^24.6.0",
-    "esbuild": "^0.21.0",
+    "esbuild": "^0.25.0",
     "html-minifier-terser": "^7.2.0"
   },
   "files": [
