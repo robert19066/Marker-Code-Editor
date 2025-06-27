@@ -1,5 +1,1 @@
-const { contextBridge, ipcRenderer } = require("electron");
-
-contextBridge.exposeInMainWorld("genAI", {
-  ask: (prompt) => ipcRenderer.invoke("genai-ask", prompt),
-});
+var{contextBridge:n,ipcRenderer:i}=require("electron");n.exposeInMainWorld("genAI",{ask:e=>i.invoke("genai-ask",e)});

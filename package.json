@@ -10,22 +10,37 @@
   },
   "scripts": {
     "start": "electron .",
-    "linux-pack": "electron-builder --linux",
-    "windows-pack": "electron-builder --win",
-    "pack-all": "electron-builder --win --linux "
+    "bundle": "node build-main.js && node build-preload.js  && node build-index.js && node minify-html.js && echo Done!",
+    "prepack": "echo WARNING YOU WON'T BE ABLE TO TEST IT ANYMORE && npm prune --production",
+    "windows-pack": "npm run bundle && electron-builder --win",
+    "linux-pack": "npm run bundle && electron-builder --linux",
+    "revert": "git checkout 47882a6579a4b4897db06c37c03981a3c5befc6e ./src/languages.js ./src/index.js index.html"
   },
   "dependencies": {
-    "@ai-sdk/deepseek": "^0.2.14",
     "@google/genai": "^1.6.0",
-    "ai": "^4.3.16",
-    "marked": "^9.0.0"
+    "codemirror": "^6.0.2",
+    "prettier": "^3.6.0",
+    "prettier-plugin-xml": "^0.1.0",
+    "y-codemirror": "^3.0.1",
+    "y-webrtc": "^10.3.0",
+    "yjs": "^13.6.27"
   },
   "devDependencies": {
     "electron": "^27.1.0",
-    "electron-builder": "^24.6.0"
+    "electron-builder": "^24.6.0",
+    "esbuild": "^0.21.0",
+    "html-minifier-terser": "^7.2.0"
   },
+  "files": [
+    "main.js",
+    "preload.js",
+    "index.html",
+    "images/",
+    "!**/*.map"
+  ],
   "build": {
     "asar": true,
+    "compression": "maximum",
     "appId": "com.marker.sitebuilder",
     "productName": "Marker Site Builder",
     "win": {
